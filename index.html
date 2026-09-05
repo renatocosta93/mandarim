@@ -34,7 +34,7 @@
       padding-bottom: 90px;
     }
 
-    /* Modal de Identificação */
+    /* Modais */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -111,7 +111,7 @@
       cursor: pointer;
     }
 
-    /* Cabeçalho Imperial */
+    /* Cabeçalho */
     header {
       background: linear-gradient(135deg, var(--china-red), var(--china-red-dark));
       color: white;
@@ -197,7 +197,7 @@
 
     .week-pill {
       flex: 1;
-      padding: 8px 12px;
+      padding: 8px 10px;
       border-radius: 12px;
       border: 1.5px solid var(--border);
       background: var(--card-bg);
@@ -207,7 +207,10 @@
       text-align: center;
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
     }
 
     .week-pill.active {
@@ -215,6 +218,12 @@
       color: white;
       border-color: var(--china-red);
       box-shadow: 0 2px 8px rgba(200, 16, 46, 0.2);
+    }
+
+    .week-pill.locked {
+      background: #F1ECE4;
+      color: #A89F91;
+      border-color: #E2DAD0;
     }
 
     /* Layout Geral */
@@ -264,7 +273,7 @@
       margin-bottom: 12px;
     }
 
-    /* Vocabulário com Imagens/Ícones */
+    /* Itens de Vocabulário */
     .vocab-item {
       display: flex;
       align-items: center;
@@ -278,7 +287,7 @@
     }
 
     .vocab-icon {
-      font-size: 1.7rem;
+      font-size: 1.6rem;
       width: 42px;
       height: 42px;
       background: #FDF4E7;
@@ -294,7 +303,7 @@
     }
 
     .mandarin {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 700;
       color: var(--china-red);
       line-height: 1.2;
@@ -304,7 +313,7 @@
       font-size: 0.92rem;
       font-weight: 700;
       color: var(--text-ink);
-      margin-top: 1px;
+      margin-top: 2px;
     }
 
     .meaning {
@@ -341,6 +350,77 @@
       font-size: 0.72rem;
       font-weight: 800;
       color: var(--gold-accent);
+    }
+
+    /* Decomposição de Radicais */
+    .radical-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .radical-card {
+      background: #FAF6F0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .radical-formula {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--china-red);
+    }
+
+    .radical-desc {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      text-align: right;
+    }
+
+    /* Drill SVO Interativo */
+    .drill-container {
+      background: #FFFDF9;
+      border: 1.5px solid var(--gold-light);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .drill-selector {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin: 10px 0;
+    }
+
+    .drill-btn {
+      padding: 6px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--gold);
+      background: #FFF;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--gold-accent);
+      cursor: pointer;
+    }
+
+    .drill-btn.active {
+      background: var(--gold);
+      color: #FFF;
+    }
+
+    .drill-display {
+      background: #FFF;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
     }
 
     /* Tons */
@@ -396,9 +476,6 @@
       color: var(--text-ink);
       text-align: left;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
     .option-btn.correct {
@@ -479,20 +556,30 @@
 </head>
 <body>
 
-  <!-- Modal Identificação do Aluno -->
+  <!-- Modal Identificação -->
   <div class="modal-overlay" id="user-modal" style="display: none;">
     <div class="modal-box">
       <h2 class="modal-title"><span>🏮</span> Painel do Aluno</h2>
-      <p class="modal-desc">Digite seu nome para carregar ou iniciar o seu registro de progresso em mandarim:</p>
+      <p class="modal-desc">Identifique-se para carregar ou salvar o seu progresso individual:</p>
       
       <input type="text" id="student-name-input" class="input-field" placeholder="Ex: Lucas Silva" />
 
       <div id="existing-students-container" style="display: none;">
-        <p style="font-size: 0.78rem; font-weight: 700; color: var(--gold-accent); margin-bottom: 6px;">Alunos registrados neste aparelho:</p>
+        <p style="font-size: 0.78rem; font-weight: 700; color: var(--gold-accent); margin-bottom: 6px;">Alunos registrados:</p>
         <div class="student-list" id="student-list"></div>
       </div>
 
-      <button class="btn-primary" onclick="confirmStudent()">Começar Estudos</button>
+      <button class="btn-primary" onclick="confirmStudent()">Entrar no Curso</button>
+    </div>
+  </div>
+
+  <!-- Modal de Bloqueio de Semana -->
+  <div class="modal-overlay" id="lock-modal" style="display: none;">
+    <div class="modal-box" style="text-align: center;">
+      <div style="font-size: 2.8rem; margin-bottom: 8px;">🔒</div>
+      <h2 class="modal-title" style="justify-content: center;" id="lock-modal-title">Semana Bloqueada</h2>
+      <p class="modal-desc" id="lock-modal-desc">Você precisa alcançar pelo menos 75% no Quiz da semana anterior para desbloquear este módulo.</p>
+      <button class="btn-primary" onclick="closeLockModal()">Entendido</button>
     </div>
   </div>
 
@@ -525,11 +612,11 @@
     </div>
   </header>
 
-  <!-- Navegador de Semanas -->
+  <!-- Navegador de Semanas com Cadeados -->
   <div class="week-nav">
-    <button class="week-pill active" onclick="setWeek(1, this)">Semana 1</button>
-    <button class="week-pill" onclick="setWeek(2, this)">Semana 2</button>
-    <button class="week-pill" onclick="setWeek(3, this)">Semana 3</button>
+    <button class="week-pill active" id="btn-week-1" onclick="trySelectWeek(1)">Semana 1</button>
+    <button class="week-pill locked" id="btn-week-2" onclick="trySelectWeek(2)">🔒 Semana 2</button>
+    <button class="week-pill locked" id="btn-week-3" onclick="trySelectWeek(3)">🔒 Semana 3</button>
   </div>
 
   <main>
@@ -538,13 +625,13 @@
       
       <!-- CONTEÚDO: SEMANA 1 -->
       <div id="week-1-content">
+        <!-- Tons e ZHU -->
         <div class="card">
           <div class="card-title"><span>🔊</span> Tons e Família MA & ZHU (S1)</div>
           <div class="tip-box">
-            Toque em 🔊 para ouvir a pronúncia nativa real via streaming ou no 🐢 para ritmo lento.
+            Toque em 🔊 para ouvir a pronúncia nativa e 🐢 para ritmo lento.
           </div>
 
-          <!-- Família MA -->
           <div class="vocab-item">
             <div class="vocab-icon">👵</div>
             <div class="vocab-text">
@@ -610,8 +697,7 @@
             </div>
           </div>
 
-          <!-- Família ZHU -->
-          <div style="margin: 14px 0 6px; font-weight: 700; font-size: 0.85rem; color: var(--gold-accent);">Família ZHU:</div>
+          <div style="margin: 14px 0 6px; font-weight: 700; font-size: 0.85rem; color: var(--gold-accent);">O Ideograma ZHU:</div>
           
           <div class="vocab-item">
             <div class="vocab-icon">🐷</div>
@@ -666,6 +752,38 @@
           </div>
         </div>
 
+        <!-- Módulo Complementar: Decomposição de Radicais -->
+        <div class="card">
+          <div class="card-title"><span>🧩</span> Lógica dos Ideogramas (Radicais)</div>
+          <div class="tip-box">
+            Os caracteres chineses são blocos visuais lógicos com pistas de significado e som:
+          </div>
+
+          <div class="radical-grid">
+            <div class="radical-card">
+              <div>
+                <div class="radical-formula">妈 = 女 + 马</div>
+                <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-ink); margin-top: 2px;">mā = nǚ + mǎ</div>
+              </div>
+              <div class="radical-desc">
+                <b>女</b> (Mulher) dá o sentido.<br>
+                <b>马</b> (Cavalo) dá o som aproximado!
+              </div>
+            </div>
+
+            <div class="radical-card">
+              <div>
+                <div class="radical-formula">好 = 女 + 子</div>
+                <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-ink); margin-top: 2px;">hǎo = nǚ + zǐ</div>
+              </div>
+              <div class="radical-desc">
+                Mulher + Criança juntos<br>
+                representam <b>"Bom / Harmonia"</b>.
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Saudações e Frases -->
         <div class="card">
           <div class="card-title"><span>🌅</span> Saudações & Cortesia (S1)</div>
@@ -714,7 +832,7 @@
             <div class="vocab-text">
               <div class="mandarin">晚安</div>
               <div class="pinyin">wǎn'ān</div>
-              <div class="meaning">Boa noite (dormir)</div>
+              <div class="meaning">Boa noite (ao dormir)</div>
             </div>
             <div class="audio-btns">
               <button class="btn-audio" onclick="playAudio('晚安')">🔊</button>
@@ -738,13 +856,26 @@
           <div class="vocab-item">
             <div class="vocab-icon">🙏</div>
             <div class="vocab-text">
-              <div class="mandarin">谢谢 / 不客气</div>
-              <div class="pinyin">xièxie / bú kèqì</div>
-              <div class="meaning">Obrigado(a) / De nada</div>
+              <div class="mandarin">谢谢</div>
+              <div class="pinyin">xièxie</div>
+              <div class="meaning">Obrigado(a)</div>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="playAudio('谢谢，不客气')">🔊</button>
-              <button class="btn-audio slow" onclick="playAudio('谢谢，不客气', true)">🐢</button>
+              <button class="btn-audio" onclick="playAudio('谢谢')">🔊</button>
+              <button class="btn-audio slow" onclick="playAudio('谢谢', true)">🐢</button>
+            </div>
+          </div>
+
+          <div class="vocab-item">
+            <div class="vocab-icon">🤝</div>
+            <div class="vocab-text">
+              <div class="mandarin">不客气</div>
+              <div class="pinyin">bú kèqì</div>
+              <div class="meaning">De nada / Não há de quê</div>
+            </div>
+            <div class="audio-btns">
+              <button class="btn-audio" onclick="playAudio('不客气')">🔊</button>
+              <button class="btn-audio slow" onclick="playAudio('不客气', true)">🐢</button>
             </div>
           </div>
 
@@ -778,11 +909,9 @@
 
       <!-- CONTEÚDO: SEMANA 2 -->
       <div id="week-2-content" style="display: none;">
+        <!-- Apresentação e Verbos -->
         <div class="card">
           <div class="card-title"><span>👥</span> Pronomes & Apresentações (S2)</div>
-          <div class="tip-box">
-            Use <b>我是 (wǒ shì)</b> para "Eu sou" e <b>我叫 (wǒ jiào)</b> para dizer seu nome.
-          </div>
 
           <div class="vocab-item">
             <div class="vocab-icon">👨‍👩‍👧‍👦</div>
@@ -805,8 +934,8 @@
               <div class="meaning">Eu me chamo / Você se chama</div>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="playAudio('我叫，你叫')">🔊</button>
-              <button class="btn-audio slow" onclick="playAudio('我叫，你叫', true)">🐢</button>
+              <button class="btn-audio" onclick="playAudio('我叫')">🔊</button>
+              <button class="btn-audio slow" onclick="playAudio('你叫', true)">🐢</button>
             </div>
           </div>
 
@@ -828,97 +957,80 @@
             <div class="vocab-text">
               <div class="mandarin">我的 / 你的 / 他的</div>
               <div class="pinyin">wǒ de / nǐ de / tā de</div>
-              <div class="meaning">Meu(minha) / Seu(sua) / Dele(dela)</div>
+              <div class="meaning">Meu / Seu / Dele (Partícula 的 de posse)</div>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="playAudio('我的，你的，他的')">🔊</button>
-              <button class="btn-audio slow" onclick="playAudio('我的，你的，他的', true)">🐢</button>
+              <button class="btn-audio" onclick="playAudio('我的你的他的')">🔊</button>
+              <button class="btn-audio slow" onclick="playAudio('我的你的他的', true)">🐢</button>
             </div>
           </div>
         </div>
 
+        <!-- Módulo Complementar: Drill Interativo SVO -->
         <div class="card">
-          <div class="card-title"><span>⚡</span> Verbos de Ação Essenciais (S2)</div>
-          
-          <div class="vocab-item">
-            <div class="vocab-icon">🚶</div>
-            <div class="vocab-text">
-              <div class="mandarin">去 (qù) / 在 (zài)</div>
-              <div class="pinyin">qù / zài</div>
-              <div class="meaning">Ir / Estar em</div>
-            </div>
-            <div class="audio-btns">
-              <button class="btn-audio" onclick="playAudio('去，在')">🔊</button>
-              <button class="btn-audio slow" onclick="playAudio('去，在', true)">🐢</button>
-            </div>
+          <div class="card-title"><span>🔄</span> Estrutura SVO Interativa (S2)</div>
+          <div class="tip-box">
+            No mandarim, a estrutura é direta: <b>Sujeito + Verbo + Objeto</b>. Toque nas opções para montar e ouvir a frase pronta:
           </div>
 
+          <div class="drill-container">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-sub);">Escolha a nacionalidade:</div>
+            <div class="drill-selector">
+              <button class="drill-btn active" onclick="setDrillCountry('巴西', 'Bāxī', 'Brasil', this)">Brasil 🇧🇷</button>
+              <button class="drill-btn" onclick="setDrillCountry('中国', 'Zhōngguó', 'China', this)">China 🇨🇳</button>
+              <button class="drill-btn" onclick="setDrillCountry('美国', 'Měiguó', 'EUA', this)">EUA 🇺🇸</button>
+            </div>
+
+            <div class="drill-display">
+              <div class="mandarin" id="drill-cn">我是巴西人</div>
+              <div class="pinyin" id="drill-py">wǒ shì bāxī rén</div>
+              <div class="meaning" id="drill-pt">Eu sou brasileiro(a)</div>
+            </div>
+
+            <button class="btn-primary" style="padding: 10px;" onclick="playDrillAudio()">🔊 Ouvir Frase Completa</button>
+          </div>
+        </div>
+
+        <!-- Verbos e Países -->
+        <div class="card">
+          <div class="card-title"><span>🌍</span> Verbos, Países & Idiomas (S2)</div>
+
           <div class="vocab-item">
-            <div class="vocab-icon">🎯</div>
+            <div class="vocab-icon">🇨🇳</div>
             <div class="vocab-text">
-              <div class="mandarin">要 (yào) / 有 (yǒu)</div>
-              <div class="pinyin">yào / yǒu</div>
-              <div class="meaning">Querer (precisar) / Ter (haver)</div>
+              <div class="mandarin">中国 / 中文</div>
+              <div class="pinyin">Zhōngguó / Zhōngwén</div>
+              <div class="meaning">China / Mandarim</div>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="playAudio('要，有')">🔊</button>
-              <button class="btn-audio slow" onclick="playAudio('要，有', true)">🐢</button>
+              <button class="btn-audio" onclick="playAudio('中国中文')">🔊</button>
+              <button class="btn-audio slow" onclick="playAudio('中国中文', true)">🐢</button>
             </div>
           </div>
 
           <div class="vocab-item">
             <div class="vocab-icon">🗣️</div>
             <div class="vocab-text">
-              <div class="mandarin">会说 (huì shuō)</div>
-              <div class="pinyin">huì shuō</div>
-              <div class="meaning">Saber/conseguir falar</div>
+              <div class="mandarin">会说中文</div>
+              <div class="pinyin">huì shuō zhōngwén</div>
+              <div class="meaning">Saber falar chinês</div>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="playAudio('会说')">🔊</button>
-              <button class="btn-audio slow" onclick="playAudio('会说', true)">🐢</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title"><span>🌍</span> Países, Pessoas & Idiomas (S2)</div>
-
-          <div class="vocab-item">
-            <div class="vocab-icon">🇨🇳</div>
-            <div class="vocab-text">
-              <div class="mandarin">中国 / 中国人 / 中文</div>
-              <div class="pinyin">Zhōngguó / rén / Zhōngwén</div>
-              <div class="meaning">China / Chinês / Mandarim</div>
-            </div>
-            <div class="audio-btns">
-              <button class="btn-audio" onclick="playAudio('中国，中国人，中文')">🔊</button>
-              <button class="btn-audio slow" onclick="playAudio('中国，中国人，中文', true)">🐢</button>
+              <button class="btn-audio" onclick="playAudio('会说中文')">🔊</button>
+              <button class="btn-audio slow" onclick="playAudio('会说中文', true)">🐢</button>
             </div>
           </div>
 
           <div class="vocab-item">
-            <div class="vocab-icon">🇺🇸</div>
+            <div class="vocab-icon">🚶</div>
             <div class="vocab-text">
-              <div class="mandarin">美国 / 英文</div>
-              <div class="pinyin">Měiguó / Yīngwén</div>
-              <div class="meaning">Estados Unidos / Inglês</div>
+              <div class="mandarin">去 / 在 / 要</div>
+              <div class="pinyin">qù / zài / yào</div>
+              <div class="meaning">Ir / Estar em / Querer</div>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="playAudio('美国，英文')">🔊</button>
-              <button class="btn-audio slow" onclick="playAudio('美国，英文', true)">🐢</button>
-            </div>
-          </div>
-
-          <div class="vocab-item">
-            <div class="vocab-icon">🇵🇹</div>
-            <div class="vocab-text">
-              <div class="mandarin">葡萄牙 / 葡文</div>
-              <div class="pinyin">Pútáoyá / Púwén</div>
-              <div class="meaning">Portugal / Língua Portuguesa</div>
-            </div>
-            <div class="audio-btns">
-              <button class="btn-audio" onclick="playAudio('葡萄牙，葡文')">🔊</button>
-              <button class="btn-audio slow" onclick="playAudio('葡萄牙，葡文', true)">🐢</button>
+              <button class="btn-audio" onclick="playAudio('去在要')">🔊</button>
+              <button class="btn-audio slow" onclick="playAudio('去在要', true)">🐢</button>
             </div>
           </div>
         </div>
@@ -927,9 +1039,9 @@
       <!-- CONTEÚDO: SEMANA 3 -->
       <div id="week-3-content" style="display: none;">
         <div class="card">
-          <div class="card-title"><span>🎵</span> Canção Infantil Tradicional (S3)</div>
+          <div class="card-title"><span>🎵</span> Canção Infantil Chinesa (S3)</div>
           <div class="tip-box">
-            <b>当我们同在一起 (Dāng wǒmen tóng zài yīqǐ)</b>: canção famosa para ritmo e memória de pronúncia. Ouça cada verso:
+            <b>当我们同在一起 (Dāng wǒmen tóng zài yīqǐ)</b>: ouça cada verso com pronúncia fluida.
           </div>
 
           <div class="vocab-item">
@@ -950,11 +1062,11 @@
             <div class="vocab-text">
               <div class="mandarin">在一起，在一起</div>
               <div class="pinyin">zài yīqǐ, zài yīqǐ</div>
-              <div class="meaning">Juntos, bem juntinhos!</div>
+              <div class="meaning">Juntos, juntos!</div>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="playAudio('在一起，在一起')">🔊</button>
-              <button class="btn-audio slow" onclick="playAudio('在一起，在一起', true)">🐢</button>
+              <button class="btn-audio" onclick="playAudio('在一起在一起')">🔊</button>
+              <button class="btn-audio slow" onclick="playAudio('在一起在一起', true)">🐢</button>
             </div>
           </div>
 
@@ -999,14 +1111,14 @@
         </div>
 
         <div class="card">
-          <div class="card-title"><span>🧩</span> Fixação e Diálogos Integrados (S3)</div>
-          
+          <div class="card-title"><span>💬</span> Aplicação em Diálogo (S3)</div>
+
           <div class="vocab-item">
             <div class="vocab-icon">🇨🇳</div>
             <div class="vocab-text">
               <div class="mandarin">你会说中文吗？</div>
               <div class="pinyin">nǐ huì shuō zhōngwén ma?</div>
-              <div class="meaning">Você sabe falar mandarim?</div>
+              <div class="meaning">Você sabe falar chinês?</div>
             </div>
             <div class="audio-btns">
               <button class="btn-audio" onclick="playAudio('你会说中文吗')">🔊</button>
@@ -1015,11 +1127,11 @@
           </div>
 
           <div class="vocab-item">
-            <div class="vocab-icon">✨</div>
+            <div class="vocab-icon">🤏</div>
             <div class="vocab-text">
               <div class="mandarin">我会说一点儿中文</div>
               <div class="pinyin">wǒ huì shuō yìdiǎnr zhōngwén</div>
-              <div class="meaning">Eu sei falar um pouquinho de mandarim</div>
+              <div class="meaning">Eu sei falar um pouquinho de chinês</div>
             </div>
             <div class="audio-btns">
               <button class="btn-audio" onclick="playAudio('我会说一点儿中文')">🔊</button>
@@ -1030,14 +1142,11 @@
       </div>
     </section>
 
-    <!-- ABA 2: TONS & FONÉTICA -->
+    <!-- ABA 2: TONS & FONÉTICA (COM PARES ASPIRADOS) -->
     <section id="tab-fonetica" class="tab-content">
       <div class="card">
         <div class="card-title"><span>🗣️</span> Guia de Áudio dos 4 Tons</div>
-        <div class="tip-box">
-          A entonação é melódica. Toque para fixar o padrão de cada tom:
-        </div>
-
+        
         <div class="tone-grid">
           <div class="tone-card">
             <div style="font-size: 0.78rem; font-weight: 800; color: var(--gold-accent);">1º TOM · Reto</div>
@@ -1060,7 +1169,7 @@
           </div>
 
           <div class="tone-card">
-            <div style="font-size: 0.78rem; font-weight: 800; color: var(--gold-accent);">3º TOM · Desce/Sobe</div>
+            <div style="font-size: 0.78rem; font-weight: 800; color: var(--gold-accent);">3º TOM · Curva</div>
             <div class="tone-symbol">mǎ</div>
             <div style="font-size: 0.75rem; color: var(--text-sub); margin-bottom: 8px;">Mergulha e sobe</div>
             <div class="audio-btns">
@@ -1080,50 +1189,63 @@
           </div>
         </div>
 
-        <div class="card-title" style="margin-top: 20px;"><span>🎯</span> Sons Especiais com Áudio</div>
-        
+        <!-- Módulo Complementar: Pares Mínimos Aspirados -->
+        <div class="card-title" style="margin-top: 20px;"><span>💨</span> Pares Aspirados (Com vs Sem Sopro)</div>
+        <div class="tip-box">
+          Em mandarim, soltar ar ou prender o ar muda a palavra inteira. Ouça o contraste:
+        </div>
+
         <div class="vocab-item">
-          <div class="vocab-icon">🐷</div>
+          <div class="vocab-icon">🔇</div>
           <div class="vocab-text">
-            <div class="mandarin">zh → 猪 (zhū)</div>
-            <div class="pinyin">Som de "dj" firme</div>
-            <div class="meaning">Como em "dju"</div>
+            <div class="mandarin">b → 爸爸 (bàba)</div>
+            <div class="pinyin">Sem ar saindo (som firme de "b/p")</div>
+            <div class="meaning">Pai</div>
           </div>
           <div class="audio-btns">
-            <button class="btn-audio" onclick="playAudio('猪')">🔊</button>
-            <button class="btn-audio slow" onclick="playAudio('猪', true)">🐢</button>
+            <button class="btn-audio" onclick="playAudio('爸爸')">🔊</button>
           </div>
         </div>
 
         <div class="vocab-item">
-          <div class="vocab-icon">🙏</div>
+          <div class="vocab-icon">💨</div>
           <div class="vocab-text">
-            <div class="mandarin">x → 谢谢 (xièxie)</div>
-            <div class="pinyin">Som de "ch" ou "sh" assoprado</div>
-            <div class="meaning">Língua atrás dos dentes de baixo</div>
+            <div class="mandarin">p → 怕 (pà)</div>
+            <div class="pinyin">Com sopro forte de ar</div>
+            <div class="meaning">Ter medo</div>
           </div>
           <div class="audio-btns">
-            <button class="btn-audio" onclick="playAudio('谢谢')">🔊</button>
-            <button class="btn-audio slow" onclick="playAudio('谢谢', true)">🐢</button>
+            <button class="btn-audio" onclick="playAudio('怕')">🔊</button>
           </div>
         </div>
 
         <div class="vocab-item">
-          <div class="vocab-icon">❓</div>
+          <div class="vocab-icon">🔇</div>
           <div class="vocab-text">
-            <div class="mandarin">q → 请问 (qǐngwèn)</div>
-            <div class="pinyin">Som de "tchi" aspirado com ar</div>
-            <div class="meaning">Pontual e soprado</div>
+            <div class="mandarin">d → 大 (dà)</div>
+            <div class="pinyin">Sem ar saindo (som firme de "d/t")</div>
+            <div class="meaning">Grande</div>
           </div>
           <div class="audio-btns">
-            <button class="btn-audio" onclick="playAudio('请问')">🔊</button>
-            <button class="btn-audio slow" onclick="playAudio('请问', true)">🐢</button>
+            <button class="btn-audio" onclick="playAudio('大')">🔊</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-icon">💨</div>
+          <div class="vocab-text">
+            <div class="mandarin">t → 他 (tā)</div>
+            <div class="pinyin">Com sopro forte de ar</div>
+            <div class="meaning">Ele</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="playAudio('他')">🔊</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ABA 3: QUIZ POR SEMANA -->
+    <!-- ABA 3: QUIZ COM GATING -->
     <section id="tab-quiz" class="tab-content">
       <div class="card">
         <div class="card-title">
@@ -1131,7 +1253,7 @@
           <h3 id="quiz-title">Quiz de Validação</h3>
         </div>
         <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 16px;" id="quiz-subtitle">
-          Sua nota será gravada no perfil do aluno selecionado.
+          Alcance pelo menos 75% para desbloquear a próxima semana!
         </p>
 
         <div id="quiz-container">
@@ -1162,37 +1284,48 @@
 
   <script>
     /* ==========================================================
-       1. REPRODUTOR DE ÁUDIO UNIVERSAL (STREAMING MP3 NATIVO)
+       1. REPRODUTOR DE ÁUDIO SANITIZADO (SEM FALHAS EM FRASES)
        ========================================================== */
     let currentAudio = null;
 
-    function playAudio(text, slow = false) {
+    function sanitizeForAudio(text) {
+      if (!text) return '';
+      // Remove barras, pontuações, parênteses e símbolos que travam URLs
+      return text.replace(/[\/／，。？！\?\!,\.\(\)（）—\-\s]/g, '');
+    }
+
+    function playAudio(rawText, slow = false) {
+      const clean = sanitizeForAudio(rawText);
+      if (!clean) return;
+
       if (currentAudio) {
         currentAudio.pause();
         currentAudio.currentTime = 0;
       }
 
-      // Endpoint direto de áudio nativo em mandarim simplificado
-      const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(text)}&le=zh`;
+      const url = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(clean)}&le=zh`;
       currentAudio = new Audio(url);
       currentAudio.playbackRate = slow ? 0.72 : 1.0;
 
-      currentAudio.play().catch(() => {
-        // Fallback para sintetizador caso o aparelho esteja offline
-        if ('speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-          const u = new SpeechSynthesisUtterance(text);
-          u.lang = 'zh-CN';
-          u.rate = slow ? 0.65 : 0.95;
-          window.speechSynthesis.speak(u);
-        }
-      });
+      const promise = currentAudio.play();
+      if (promise !== undefined) {
+        promise.catch(() => {
+          // Fallback para sintetizador nativo
+          if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(clean);
+            u.lang = 'zh-CN';
+            u.rate = slow ? 0.65 : 0.95;
+            window.speechSynthesis.speak(u);
+          }
+        });
+      }
     }
 
     /* ==========================================================
-       2. GESTÃO DE ALUNOS & HISTÓRICO LOCALSTORAGE
+       2. GESTÃO DE ALUNOS & PERSISTÊNCIA LOCALSTORAGE
        ========================================================== */
-    const DB_KEY = 'mandarim_hub_students_v3';
+    const DB_KEY = 'mandarim_hub_students_v4';
     let currentStudent = null;
     let selectedWeek = 1;
 
@@ -1260,21 +1393,44 @@
     }
 
     /* ==========================================================
-       3. CONTROLE DE SEMANAS E PROGRESSO
+       3. SISTEMA DE GATING (BLOQUEIO POR DOMÍNIO DAS SEMANAS)
        ========================================================== */
-    function setWeek(w, btn) {
+    function isWeekUnlocked(w) {
+      if (w === 1) return true;
+      const db = getDatabase();
+      if (!currentStudent || !db.students[currentStudent]) return false;
+      const prevKey = `semana${w - 1}`;
+      const prevData = db.students[currentStudent][prevKey];
+      return prevData && prevData.progress >= 75;
+    }
+
+    function trySelectWeek(w) {
+      if (!isWeekUnlocked(w)) {
+        const modal = document.getElementById('lock-modal');
+        document.getElementById('lock-modal-title').textContent = `Semana ${w} Bloqueada`;
+        document.getElementById('lock-modal-desc').textContent = 
+          `Para acessar a Semana ${w}, você precisa concluir o Quiz da Semana ${w - 1} com pelo menos 75% de acertos.`;
+        modal.style.display = 'flex';
+        return;
+      }
+      setWeek(w);
+    }
+
+    function closeLockModal() {
+      document.getElementById('lock-modal').style.display = 'none';
+    }
+
+    function setWeek(w) {
       selectedWeek = w;
-      document.querySelectorAll('.week-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
 
       document.getElementById('week-1-content').style.display = w === 1 ? 'block' : 'none';
       document.getElementById('week-2-content').style.display = w === 2 ? 'block' : 'none';
       document.getElementById('week-3-content').style.display = w === 3 ? 'block' : 'none';
 
       const titles = {
-        1: "Semana 1: Sons & Saudações",
-        2: "Semana 2: Apresentações & Países",
-        3: "Semana 3: Música & Diálogos"
+        1: "Semana 1: Sons, Tons & Saudações",
+        2: "Semana 2: Apresentações, SVO & Países",
+        3: "Semana 3: Música Tradicional & Diálogos"
       };
       document.getElementById('current-week-title').textContent = titles[w];
       updateUI();
@@ -1299,6 +1455,32 @@
       document.getElementById('week-progress-label').textContent = `Progresso da Semana ${selectedWeek}`;
       document.getElementById('week-progress-val').textContent = `${currProg}%`;
       document.getElementById('progress-fill').style.width = `${currProg}%`;
+
+      // Atualiza visual dos botões de semana e cadeados
+      const btnW1 = document.getElementById('btn-week-1');
+      const btnW2 = document.getElementById('btn-week-2');
+      const btnW3 = document.getElementById('btn-week-3');
+
+      [btnW1, btnW2, btnW3].forEach(b => b.classList.remove('active'));
+      if (selectedWeek === 1) btnW1.classList.add('active');
+      if (selectedWeek === 2) btnW2.classList.add('active');
+      if (selectedWeek === 3) btnW3.classList.add('active');
+
+      if (isWeekUnlocked(2)) {
+        btnW2.classList.remove('locked');
+        btnW2.textContent = "Semana 2";
+      } else {
+        btnW2.classList.add('locked');
+        btnW2.textContent = "🔒 Semana 2";
+      }
+
+      if (isWeekUnlocked(3)) {
+        btnW3.classList.remove('locked');
+        btnW3.textContent = "Semana 3";
+      } else {
+        btnW3.classList.add('locked');
+        btnW3.textContent = "🔒 Semana 3";
+      }
     }
 
     function switchTab(tabId, el) {
@@ -1310,7 +1492,29 @@
     }
 
     /* ==========================================================
-       4. BANCO DE QUIZZES DAS SEMANAS 1, 2 E 3
+       4. DRILL SVO INTERATIVO (SEMANA 2)
+       ========================================================== */
+    let currentDrill = { cn: '我是巴西人', py: 'wǒ shì bāxī rén', pt: 'Eu sou brasileiro(a)' };
+
+    function setDrillCountry(countryCn, countryPy, countryPt, btn) {
+      document.querySelectorAll('.drill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      currentDrill.cn = `我是${countryCn}人`;
+      currentDrill.py = `wǒ shì ${countryPy.toLowerCase()} rén`;
+      currentDrill.pt = `Eu sou ${countryPt.toLowerCase()}(a)`;
+
+      document.getElementById('drill-cn').textContent = currentDrill.cn;
+      document.getElementById('drill-py').textContent = currentDrill.py;
+      document.getElementById('drill-pt').textContent = currentDrill.pt;
+    }
+
+    function playDrillAudio() {
+      playAudio(currentDrill.cn);
+    }
+
+    /* ==========================================================
+       5. QUIZZES COM PROGRESSÃO REAL
        ========================================================== */
     const quizzes = {
       1: [
@@ -1318,19 +1522,25 @@
           q: "Como se diz 'Bom dia' em mandarim?",
           options: ["Xiàwǔ hǎo (下午好)", "Zǎoshang hǎo (早上好)", "Wǎn'ān (晚安)", "Nǐ hǎo (你好)"],
           answer: 1,
-          explain: "早上好 (Zǎoshang hǎo) = Bom dia (早上 manhã + 好 bom)."
+          explain: "早上好 (Zǎoshang hǎo) é Bom dia (早上 manhã + 好 bom)."
         },
         {
           q: "Qual é o significado de 猪 (zhū com 1º tom)?",
           options: ["Bambu", "Cozinhar", "Porco", "Morar"],
           answer: 2,
-          explain: "猪 (zhū, 1º tom) é porco. 竹 (zhú, 2º) é bambu e 煮 (zhǔ, 3º) é cozinhar."
+          explain: "猪 (zhū, 1º tom) = porco. 竹 (zhú, 2º) = bambu e 煮 (zhǔ, 3º) = cozinhar."
         },
         {
           q: "Qual frase significa 'Eu sou brasileiro(a)'?",
           options: ["Wǒ shì bāxī rén", "Wǒ shì zhōngguó rén", "Wǒ hěn hǎo", "Nǐ jiào shénme"],
           answer: 0,
-          explain: "我是巴西人 (Wǒ shì bāxī rén) = Eu sou do Brasil."
+          explain: "我是巴西人 (Wǒ shì bāxī rén) = Eu sou do Brasil / brasileiro."
+        },
+        {
+          q: "No ideograma 妈 (mā - mãe), qual parte dá a pista do som aproximado?",
+          options: ["女 (mulher)", "马 (cavalo - som mǎ)", "好 (bom)", "子 (filho)"],
+          answer: 1,
+          explain: "马 (mǎ = cavalo) é o componente fonético que empresta o som à palavra 妈 (mā)."
         }
       ],
       2: [
@@ -1347,10 +1557,10 @@
           explain: "A partícula 的 (de) indica posse: 我的 (wǒ de = meu/minha)."
         },
         {
-          q: "Qual destas palavras significa a língua chinesa (Mandarim)?",
+          q: "Qual destas palavras representa o idioma chinês (Mandarim)?",
           options: ["Zhōngguó", "Zhōngwén", "Yīngwén", "Púwén"],
           answer: 1,
-          explain: "中文 (Zhōngwén) é o idioma chinês. 中国 (Zhōngguó) é o país China."
+          explain: "中文 (Zhōngwén) é a língua chinesa. 中国 (Zhōngguó) é o país China."
         }
       ],
       3: [
@@ -1361,10 +1571,10 @@
           explain: "当我们同在一起 significa 'Quando estamos juntos' na clássica canção infantil."
         },
         {
-          q: "Qual verbo significa 'saber / ser capaz de' falar um idioma?",
+          q: "Qual verbo significa 'saber / ser capaz de' por aprendizado?",
           options: ["会 (huì)", "在 (zài)", "去 (qù)", "有 (yǒu)"],
           answer: 0,
-          explain: "会 (huì) expressa uma habilidade aprendida: 我会说中文 (Eu sei falar chinês)."
+          explain: "会 (huì) expressa habilidade aprendida: 我会说中文 (Eu sei falar chinês)."
         }
       ]
     };
@@ -1375,7 +1585,7 @@
     function loadQuiz() {
       const qList = quizzes[selectedWeek];
       document.getElementById('quiz-title').textContent = `Quiz da Semana ${selectedWeek}`;
-      document.getElementById('quiz-subtitle').textContent = `Validando conhecimento da Semana ${selectedWeek}`;
+      document.getElementById('quiz-subtitle').textContent = `Acerte pelo menos 75% para validar este módulo.`;
       
       if (!qList || qList.length === 0) return;
 
@@ -1449,14 +1659,24 @@
         updateUI();
       }
 
+      const passed = percentage >= 75;
+      const nextWeekNum = selectedWeek + 1;
       const container = document.getElementById('quiz-container');
+
       container.innerHTML = `
         <div style="text-align: center; padding: 20px 0;">
-          <div style="font-size: 3rem; margin-bottom: 8px;">🎉</div>
-          <h3 style="font-size: 1.25rem; color: var(--china-red); margin-bottom: 6px;">Semana ${selectedWeek} Concluída!</h3>
-          <p style="font-size: 0.9rem; color: var(--text-sub); margin-bottom: 20px;">
+          <div style="font-size: 3rem; margin-bottom: 8px;">${passed ? '🎉' : '📖'}</div>
+          <h3 style="font-size: 1.25rem; color: var(--china-red); margin-bottom: 6px;">
+            ${passed ? `Semana ${selectedWeek} Concluída!` : 'Precisa de mais revisão!'}
+          </h3>
+          <p style="font-size: 0.9rem; color: var(--text-sub); margin-bottom: 16px;">
             Aluno: <b>${currentStudent}</b><br>
             Acertos: <b>${score} de ${qList.length}</b> (${percentage}% de retenção)
+          </p>
+          <p style="font-size: 0.82rem; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 20px; font-weight:700;">
+            ${passed 
+              ? (nextWeekNum <= 3 ? `🔓 Semana ${nextWeekNum} desbloqueada com sucesso!` : '🏆 Trilha inicial dominada!') 
+              : 'É necessário pelo menos 75% para desbloquear a próxima semana.'}
           </p>
           <button class="btn-primary" onclick="restartQuiz()">Refazer Quiz</button>
         </div>
@@ -1470,7 +1690,7 @@
     }
 
     /* ==========================================================
-       5. INICIALIZAÇÃO
+       6. INICIALIZAÇÃO
        ========================================================== */
     window.onload = () => {
       const db = getDatabase();
