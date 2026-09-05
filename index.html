@@ -1,1 +1,934 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mandarim Simplificado - Semana 1</title>
+  <style>
+    :root {
+      --primary: #4F46E5;
+      --primary-hover: #4338CA;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text: #0F172A;
+      --text-sub: #64748B;
+      --border: #E2E8F0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding-bottom: 80px;
+    }
+
+    /* Cabeçalho e Estatísticas */
+    header {
+      background: linear-gradient(135deg, var(--primary), #6366F1);
+      color: white;
+      padding: 20px 16px 24px;
+      border-radius: 0 0 24px 24px;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .header-top h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .stats-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 12px 16px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar-bg {
+      background: rgba(255, 255, 255, 0.3);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      background: var(--success);
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    /* Navegação por Abas */
+    nav.tab-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      display: flex;
+      border-top: 1px solid var(--border);
+      padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+      z-index: 100;
+    }
+
+    .tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 8px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-sub);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+    }
+
+    .tab-btn svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* Conteúdo Principal */
+    main {
+      padding: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Cartões de Conteúdo */
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Itens de Vocabulário / Frases */
+    .vocab-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      border-radius: 12px;
+      background: #F1F5F9;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .vocab-text {
+      flex: 1;
+    }
+
+    .mandarin {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+
+    .pinyin {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 2px;
+    }
+
+    .meaning {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
+    .audio-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-audio {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: transform 0.1s ease;
+    }
+
+    .btn-audio:active {
+      transform: scale(0.92);
+      background: #EEF2FF;
+    }
+
+    .btn-audio.slow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Dicas Pedagógicas */
+    .tip-box {
+      background: #EFF6FF;
+      border-left: 4px solid var(--primary);
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: #1E40AF;
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+
+    /* Tons Gráficos */
+    .tone-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .tone-card {
+      background: #FAF5FF;
+      border: 1px solid #E9D5FF;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .tone-number {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #7E22CE;
+    }
+
+    .tone-symbol {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #6B21A8;
+    }
+
+    .tone-desc {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    /* Exercícios e Quiz */
+    .quiz-question {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .option-btn {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--card-bg);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .option-btn:active {
+      transform: scale(0.98);
+    }
+
+    .option-btn.correct {
+      background: #D1FAE5;
+      border-color: var(--success);
+      color: #065F46;
+    }
+
+    .option-btn.wrong {
+      background: #FEE2E2;
+      border-color: var(--danger);
+      color: #991B1B;
+    }
+
+    .feedback-box {
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+      display: none;
+      line-height: 1.4;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-primary:active {
+      background: var(--primary-hover);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho com Progresso -->
+  <header>
+    <div class="header-top">
+      <div>
+        <span class="badge">Nível Iniciante</span>
+        <h1 style="margin-top: 4px;">Mandarim Simplificado</h1>
+      </div>
+      <div style="text-align: right;">
+        <span style="font-size: 0.75rem; opacity: 0.9;">Semana 1</span>
+        <div style="font-size: 1.1rem; font-weight: 800;">Fundação & Sons</div>
+      </div>
+    </div>
+
+    <div class="stats-card">
+      <div class="progress-info">
+        <span>Progresso da Semana</span>
+        <span id="progress-percent" style="font-weight: 700;">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ABA 1: TRILHA DE LIÇÕES -->
+    <section id="tab-licoes" class="tab-content active">
+      
+      <!-- Lição 1: Tons e Casos "MA" e "ZHU" -->
+      <div class="card">
+        <div class="card-title">
+          <span>🎧</span>
+          <h3>Lição 1: Os 4 Tons (Família MA e ZHU)</h3>
+        </div>
+        <div class="tip-box">
+          No mandarim, a mesma sílaba muda completamente de significado dependendo do tom de voz! Toque no alto-falante 🔊 para ouvir o som nativo ou no 🐢 para escutar devagar.
+        </div>
+
+        <!-- Demonstração dos 4 tons de MA -->
+        <h4 style="font-size: 0.9rem; margin-bottom: 8px; color: var(--text-sub);">Variação de Tons com "MA":</h4>
+        
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">妈</div>
+            <div class="pinyin">mā (1º tom - Alto e contínuo)</div>
+            <div class="meaning">Mãe</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('妈')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('妈', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">麻</div>
+            <div class="pinyin">má (2º tom - Subindo / pergunta)</div>
+            <div class="meaning">Erva / cânhamo / formigamento</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('麻')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('麻', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">马</div>
+            <div class="pinyin">mǎ (3º tom - Desce e sobe)</div>
+            <div class="meaning">Cavalo</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('马')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('马', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">骂</div>
+            <div class="pinyin">mà (4º tom - Seco / ordem descendente)</div>
+            <div class="meaning">Xingar / repreender</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('骂')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('骂', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">吗</div>
+            <div class="pinyin">ma (Tom Neutro - Curto e leve)</div>
+            <div class="meaning">Partícula de pergunta no fim da frase (?)</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('吗')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('吗', true)">🐢</button>
+          </div>
+        </div>
+
+        <!-- Família ZHU -->
+        <h4 style="font-size: 0.9rem; margin: 16px 0 8px; color: var(--text-sub);">O Ideograma "ZHU" e seus tons:</h4>
+        
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">猪 / 珠</div>
+            <div class="pinyin">zhū (1º tom)</div>
+            <div class="meaning">Porco / Pérola</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('猪')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('猪', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">竹</div>
+            <div class="pinyin">zhú (2º tom)</div>
+            <div class="meaning">Bambu</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('竹')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('竹', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">煮</div>
+            <div class="pinyin">zhǔ (3º tom)</div>
+            <div class="meaning">Cozinhar / ferver</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('煮')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('煮', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">住 / 祝</div>
+            <div class="pinyin">zhù (4º tom)</div>
+            <div class="meaning">Morar / Desejar felicitações</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('住')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('住', true)">🐢</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lição 2: Saudações Essenciais -->
+      <div class="card">
+        <div class="card-title">
+          <span>☀️</span>
+          <h3>Lição 2: Saudações e Cumprimentos</h3>
+        </div>
+        <div class="tip-box">
+          A palavra <b>好 (hǎo)</b> significa "bom" ou "bem". Ao colocá-la após um período do dia ou pronome, você forma saudações naturais!
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">早上好</div>
+            <div class="pinyin">zǎoshang hǎo</div>
+            <div class="meaning">Bom dia</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('早上好')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('早上好', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">下午好</div>
+            <div class="pinyin">xiàwǔ hǎo</div>
+            <div class="meaning">Boa tarde</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('下午好')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('下午好', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">晚上好</div>
+            <div class="pinyin">wǎnshang hǎo</div>
+            <div class="meaning">Boa noite (ao chegar/encontrar)</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('晚上好')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('晚上好', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">晚安</div>
+            <div class="pinyin">wǎn'ān</div>
+            <div class="meaning">Boa noite (despedida / ao dormir)</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('晚安')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('晚安', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">你好</div>
+            <div class="pinyin">nǐ hǎo</div>
+            <div class="meaning">Olá / Oi</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('你好')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('你好', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">你好吗？</div>
+            <div class="pinyin">nǐ hǎo ma?</div>
+            <div class="meaning">Como vai você?</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('你好吗')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('你好吗', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">我很好，你呢？</div>
+            <div class="pinyin">wǒ hěn hǎo, nǐ ne?</div>
+            <div class="meaning">Eu estou muito bem, e você?</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('我很好，你呢')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('我很好，你呢', true)">🐢</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lição 3: Cortesia e Primeiras Frases -->
+      <div class="card">
+        <div class="card-title">
+          <span>🤝</span>
+          <h3>Lição 3: Cortesia e Sobrevivência</h3>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">谢谢</div>
+            <div class="pinyin">xièxie</div>
+            <div class="meaning">Obrigado(a)</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('谢谢')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('谢谢', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">不客气</div>
+            <div class="pinyin">bú kèqì</div>
+            <div class="meaning">De nada / Não há de quê</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('不客气')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('不客气', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">对不起</div>
+            <div class="pinyin">duìbùqǐ</div>
+            <div class="meaning">Desculpe / Perdão</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('对不起')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('对不起', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">再见</div>
+            <div class="pinyin">zàijiàn</div>
+            <div class="meaning">Até logo / Tchau</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('再见')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('再见', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">欢迎</div>
+            <div class="pinyin">huānyíng</div>
+            <div class="meaning">Seja bem-vindo(a)</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('欢迎')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('欢迎', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">请问</div>
+            <div class="pinyin">qǐngwèn</div>
+            <div class="meaning">Por favor / Com licença, posso perguntar?</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('请问')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('请问', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">我是巴西人</div>
+            <div class="pinyin">wǒ shì bāxī rén</div>
+            <div class="meaning">Eu sou brasileiro(a)</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('我是巴西人')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('我是巴西人', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">这个中文叫什么？</div>
+            <div class="pinyin">zhège zhōngwén jiào shénme?</div>
+            <div class="meaning">Como se diz isto em mandarim?</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('这个中文叫什么')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('这个中文叫什么', true)">🐢</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABA 2: GUIA FONÉTICO -->
+    <section id="tab-fonetica" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <span>🗣️</span>
+          <h3>Anatomia dos 4 Tons</h3>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 12px;">
+          O mandarim possui 4 tons melódicos principais e 1 tom neutro. Mudar a entonação muda a palavra:
+        </p>
+
+        <div class="tone-grid">
+          <div class="tone-card">
+            <div class="tone-number">1º TOM</div>
+            <div class="tone-symbol">ā</div>
+            <div class="tone-desc">Alto, reto e constante (como uma nota musical sustentada).</div>
+          </div>
+          <div class="tone-card">
+            <div class="tone-number">2º TOM</div>
+            <div class="tone-symbol">á</div>
+            <div class="tone-desc">Ascendente (como fazer uma pergunta: "Hã?!").</div>
+          </div>
+          <div class="tone-card">
+            <div class="tone-number">3º TOM</div>
+            <div class="tone-symbol">ǎ</div>
+            <div class="tone-desc">Cai ao fundo da garganta e sobe levemente.</div>
+          </div>
+          <div class="tone-card">
+            <div class="tone-number">4º TOM</div>
+            <div class="tone-symbol">à</div>
+            <div class="tone-desc">Descendente e rápido (como uma ordem firme: "Não!").</div>
+          </div>
+        </div>
+
+        <div class="card-title" style="margin-top: 20px;">
+          <span>🎯</span>
+          <h3>Dicas de Sons (Pinyin x Português)</h3>
+        </div>
+        <ul style="font-size: 0.85rem; color: var(--text); padding-left: 18px; line-height: 1.6;">
+          <li><b>zh:</b> Soa como "dj" firme em português (ex: <i>zhū</i> lembra "dju").</li>
+          <li><b>x:</b> Soa como o "ch" ou "sh" suave soprado (ex: <i>xièxie</i> lembra "shie-shie").</li>
+          <li><b>q:</b> Soa como "tchi" aspirado bem pontual.</li>
+          <li><b>c:</b> Soa como "ts" no final de "pizza" (ex: <i>cì</i>).</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ABA 3: QUIZ DE DESBLOQUEIO -->
+    <section id="tab-quiz" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <span>🏆</span>
+          <h3>Desafio de Retenção da Semana 1</h3>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 16px;">
+          Responda corretamente às perguntas para registrar e validar o seu progresso da semana.
+        </p>
+
+        <div id="quiz-container">
+          <div class="quiz-question" id="quiz-q">Carregando pergunta...</div>
+          <div class="quiz-options" id="quiz-opts"></div>
+          <div class="feedback-box" id="quiz-feedback"></div>
+          <button class="btn-primary" id="quiz-next-btn" style="display: none;" onclick="nextQuestion()">Próxima Pergunta</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Barra de Abas Inferior (Mobile Style) -->
+  <nav class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('tab-licoes', this)">
+      <svg fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a10.974 10.974 0 014.75-2.05V4.5a1 1 0 012 0v1.5a10.974 10.974 0 014.75 2.051l2.644-1.13a1 1 0 000-1.84l-7-3zM4 11.5v3.75A6.5 6.5 0 0010 21.75a6.5 6.5 0 006-6.5V11.5l-6 2.57-6-2.57z"/></svg>
+      <span>Lições</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('tab-fonetica', this)">
+      <svg fill="currentColor" viewBox="0 0 20 20"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"/></svg>
+      <span>Tons & Fonética</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('tab-quiz', this)">
+      <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+      <span>Quiz Semanal</span>
+    </button>
+  </nav>
+
+  <script>
+    // 1. Áudio Nativo via Web Speech API (Mandarim zh-CN)
+    function speak(text, slow = false) {
+      if (!('speechSynthesis' in window)) {
+        alert('Seu navegador não suporta áudio nativo.');
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'zh-CN';
+      utterance.rate = slow ? 0.65 : 0.95;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // 2. Navegação de Abas
+    function switchTab(tabId, el) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      el.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // 3. Quiz da Semana 1 com Validação de Progresso
+    const questions = [
+      {
+        q: "Como se diz 'Bom dia' em mandarim?",
+        options: ["Xiàwǔ hǎo (下午好)", "Zǎoshang hǎo (早上好)", "Wǎn'ān (晚安)", "Nǐ hǎo (你好)"],
+        answer: 1,
+        explain: "早上好 (Zǎoshang hǎo) é composto por 早上 (manhã) + 好 (bom/bem)."
+      },
+      {
+        q: "Qual é o significado do ideograma 猪 (zhū com 1º tom)?",
+        options: ["Bambu", "Cozinhar", "Porco", "Morar"],
+        answer: 2,
+        explain: "猪 (zhū, 1º tom) significa 'porco'. Já 竹 (zhú, 2º tom) é bambu e 煮 (zhǔ, 3º tom) é cozinhar."
+      },
+      {
+        q: "Qual partícula indica uma pergunta direta no final da frase (ex: Nǐ hǎo ____?)",
+        options: ["ne (呢)", "ma (吗)", "de (的)", "ba (吧)"],
+        answer: 1,
+        explain: "A partícula 吗 (ma) transforma frases declarativas em perguntas de sim/não: 你好 (Olá) -> 你好吗? (Como vai?)."
+      },
+      {
+        q: "O que significa a expressão 'Wǒ shì bāxī rén' (我是巴西人)?",
+        options: ["Eu falo mandarim", "Eu sou estudante", "Eu sou brasileiro(a)", "Eu moro no Brasil"],
+        answer: 2,
+        explain: "我是 (Wǒ shì = Eu sou) + 巴西人 (Bāxī rén = Pessoa do Brasil / Brasileiro)."
+      }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+
+    function loadQuiz() {
+      const qData = questions[currentQ];
+      document.getElementById('quiz-q').textContent = `${currentQ + 1}. ${qData.q}`;
+      const optsContainer = document.getElementById('quiz-opts');
+      optsContainer.innerHTML = '';
+      
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.style.display = 'none';
+      document.getElementById('quiz-next-btn').style.display = 'none';
+
+      qData.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt;
+        btn.onclick = () => selectOption(idx);
+        optsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedIdx) {
+      const qData = questions[currentQ];
+      const buttons = document.querySelectorAll('.option-btn');
+      buttons.forEach(btn => btn.disabled = true);
+
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.style.display = 'block';
+
+      if (selectedIdx === qData.answer) {
+        buttons[selectedIdx].classList.add('correct');
+        feedback.style.background = '#D1FAE5';
+        feedback.style.color = '#065F46';
+        feedback.textContent = `Correto! ${qData.explain}`;
+        score++;
+      } else {
+        buttons[selectedIdx].classList.add('wrong');
+        buttons[qData.answer].classList.add('correct');
+        feedback.style.background = '#FEE2E2';
+        feedback.style.color = '#991B1B';
+        feedback.textContent = `Incorreto. ${qData.explain}`;
+      }
+
+      document.getElementById('quiz-next-btn').style.display = 'block';
+    }
+
+    function nextQuestion() {
+      currentQ++;
+      if (currentQ < questions.length) {
+        loadQuiz();
+      } else {
+        showQuizResults();
+      }
+    }
+
+    function showQuizResults() {
+      const container = document.getElementById('quiz-container');
+      const percentage = Math.round((score / questions.length) * 100);
+      
+      // Salva progresso no localStorage do celular
+      localStorage.setItem('mandarim_semana1_progress', percentage);
+      updateProgressDisplay();
+
+      container.innerHTML = `
+        <div style="text-align: center; padding: 20px 0;">
+          <div style="font-size: 3rem; margin-bottom: 12px;">🎉</div>
+          <h3 style="font-size: 1.3rem; margin-bottom: 8px;">Semana 1 Concluída!</h3>
+          <p style="font-size: 0.95rem; color: var(--text-sub); margin-bottom: 20px;">
+            Você acertou <b>${score} de ${questions.length}</b> perguntas (${percentage}% de retenção).
+          </p>
+          <button class="btn-primary" onclick="restartQuiz()">Refazer Quiz</button>
+        </div>
+      `;
+    }
+
+    function restartQuiz() {
+      currentQ = 0;
+      score = 0;
+      location.reload();
+    }
+
+    function updateProgressDisplay() {
+      const saved = localStorage.getItem('mandarim_semana1_progress') || 0;
+      document.getElementById('progress-percent').textContent = `${saved}%`;
+      document.getElementById('progress-fill').style.width = `${saved}%`;
+    }
+
+    // Inicialização
+    window.onload = () => {
+      updateProgressDisplay();
+      loadQuiz();
+    };
+  </script>
+</body>
+</html>
 
