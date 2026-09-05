@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Mandarim Simplificado - Semana 1</title>
+  <title>Mandarim Simplificado - Tutor</title>
   <style>
     :root {
       --primary: #4F46E5;
       --primary-hover: #4338CA;
       --success: #10B981;
-      --warning: #F59E0B;
       --danger: #EF4444;
       --bg: #F8FAFC;
       --card-bg: #FFFFFF;
@@ -22,49 +21,136 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
       background-color: var(--bg);
       color: var(--text);
-      padding-bottom: 80px;
+      padding-bottom: 90px;
     }
 
-    /* Cabeçalho e Estatísticas */
+    /* Modal de Identificação do Aluno */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 999;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .modal-desc {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      font-size: 1rem;
+      margin-bottom: 14px;
+      outline: none;
+    }
+
+    .input-field:focus {
+      border-color: var(--primary);
+    }
+
+    .student-list {
+      max-height: 140px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .student-item {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #F8FAFC;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    /* Cabeçalho */
     header {
       background: linear-gradient(135deg, var(--primary), #6366F1);
       color: white;
-      padding: 20px 16px 24px;
+      padding: 20px 16px 20px;
       border-radius: 0 0 24px 24px;
       box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
     }
 
-    .header-top {
+    .user-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .header-top h1 {
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-
-    .badge {
-      background: rgba(255, 255, 255, 0.2);
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
+    .user-info {
+      font-size: 0.85rem;
       font-weight: 600;
+    }
+
+    .btn-switch-user {
+      background: rgba(255, 255, 255, 0.25);
+      border: none;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .header-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
     }
 
     .stats-card {
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(8px);
-      border-radius: 16px;
+      border-radius: 14px;
       padding: 12px 16px;
     }
 
@@ -89,7 +175,7 @@
       transition: width 0.4s ease;
     }
 
-    /* Navegação por Abas */
+    /* Navegação */
     nav.tab-bar {
       position: fixed;
       bottom: 0;
@@ -126,7 +212,7 @@
       height: 22px;
     }
 
-    /* Conteúdo Principal */
+    /* Conteúdo */
     main {
       padding: 16px;
       max-width: 600px;
@@ -141,7 +227,6 @@
       display: block;
     }
 
-    /* Cartões de Conteúdo */
     .card {
       background: var(--card-bg);
       border-radius: 16px;
@@ -161,7 +246,6 @@
       gap: 8px;
     }
 
-    /* Itens de Vocabulário / Frases */
     .vocab-item {
       display: flex;
       align-items: center;
@@ -178,7 +262,7 @@
     }
 
     .mandarin {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       font-weight: 600;
       color: var(--primary);
       line-height: 1.2;
@@ -228,7 +312,6 @@
       color: var(--primary);
     }
 
-    /* Dicas Pedagógicas */
     .tip-box {
       background: #EFF6FF;
       border-left: 4px solid var(--primary);
@@ -240,7 +323,7 @@
       margin-bottom: 14px;
     }
 
-    /* Tons Gráficos */
+    /* Grid de Tons com Áudio */
     .tone-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -252,8 +335,12 @@
       background: #FAF5FF;
       border: 1px solid #E9D5FF;
       border-radius: 12px;
-      padding: 10px;
+      padding: 12px;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .tone-number {
@@ -263,18 +350,20 @@
     }
 
     .tone-symbol {
-      font-size: 1.5rem;
-      font-weight: 700;
+      font-size: 1.6rem;
+      font-weight: 800;
       color: #6B21A8;
+      margin: 4px 0;
     }
 
     .tone-desc {
       font-size: 0.75rem;
       color: var(--text-sub);
-      margin-top: 4px;
+      margin-bottom: 8px;
+      line-height: 1.3;
     }
 
-    /* Exercícios e Quiz */
+    /* Quiz */
     .quiz-question {
       font-size: 1rem;
       font-weight: 600;
@@ -299,11 +388,6 @@
       color: var(--text);
       text-align: left;
       cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .option-btn:active {
-      transform: scale(0.98);
     }
 
     .option-btn.correct {
@@ -337,33 +421,50 @@
       font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
-    }
-
-    .btn-primary:active {
-      background: var(--primary-hover);
     }
   </style>
 </head>
 <body>
 
-  <!-- Cabeçalho com Progresso -->
+  <!-- Modal de Identificação do Aluno -->
+  <div class="modal-overlay" id="user-modal" style="display: none;">
+    <div class="modal-box">
+      <h2 class="modal-title">Identificação do Aluno</h2>
+      <p class="modal-desc">Digite seu nome para carregar ou iniciar seu registro contínuo de aprendizagem.</p>
+      
+      <input type="text" id="student-name-input" class="input-field" placeholder="Ex: Lucas Silva" />
+
+      <div id="existing-students-container" style="display: none;">
+        <p style="font-size: 0.8rem; font-weight: 700; color: var(--text-sub); margin-bottom: 6px;">Alunos já cadastrados:</p>
+        <div class="student-list" id="student-list"></div>
+      </div>
+
+      <button class="btn-primary" onclick="confirmStudent()">Entrar nos Estudos</button>
+    </div>
+  </div>
+
+  <!-- Cabeçalho -->
   <header>
-    <div class="header-top">
+    <div class="user-bar">
+      <div class="user-info">👤 Aluno: <span id="display-user-name">---</span></div>
+      <button class="btn-switch-user" onclick="openUserModal()">Trocar Aluno</button>
+    </div>
+
+    <div class="header-main">
       <div>
-        <span class="badge">Nível Iniciante</span>
-        <h1 style="margin-top: 4px;">Mandarim Simplificado</h1>
+        <h1 style="font-size: 1.25rem;">Mandarim Simplificado</h1>
+        <p style="font-size: 0.8rem; opacity: 0.9;">Semana 1: Fundação, Sons & Saudações</p>
       </div>
       <div style="text-align: right;">
-        <span style="font-size: 0.75rem; opacity: 0.9;">Semana 1</span>
-        <div style="font-size: 1.1rem; font-weight: 800;">Fundação & Sons</div>
+        <span style="font-size: 0.75rem; opacity: 0.9;">Retenção</span>
+        <div style="font-size: 1.2rem; font-weight: 800;" id="progress-percent">0%</div>
       </div>
     </div>
 
     <div class="stats-card">
       <div class="progress-info">
-        <span>Progresso da Semana</span>
-        <span id="progress-percent" style="font-weight: 700;">0%</span>
+        <span>Progresso da Semana 1</span>
+        <span id="progress-status" style="font-weight: 700;">Iniciante</span>
       </div>
       <div class="progress-bar-bg">
         <div class="progress-bar-fill" id="progress-fill"></div>
@@ -372,26 +473,22 @@
   </header>
 
   <main>
-    <!-- ABA 1: TRILHA DE LIÇÕES -->
+    <!-- ABA 1: LIÇÕES -->
     <section id="tab-licoes" class="tab-content active">
-      
-      <!-- Lição 1: Tons e Casos "MA" e "ZHU" -->
       <div class="card">
         <div class="card-title">
           <span>🎧</span>
-          <h3>Lição 1: Os 4 Tons (Família MA e ZHU)</h3>
+          <h3>Lição 1: Variações Tonais (MA e ZHU)</h3>
         </div>
         <div class="tip-box">
-          No mandarim, a mesma sílaba muda completamente de significado dependendo do tom de voz! Toque no alto-falante 🔊 para ouvir o som nativo ou no 🐢 para escutar devagar.
+          Ouça o som nativo tocando em 🔊 ou escute em ritmo lento tocando no 🐢.
         </div>
 
-        <!-- Demonstração dos 4 tons de MA -->
-        <h4 style="font-size: 0.9rem; margin-bottom: 8px; color: var(--text-sub);">Variação de Tons com "MA":</h4>
-        
+        <h4 style="font-size: 0.85rem; margin-bottom: 8px; color: var(--text-sub);">Família MA (Os 4 Tons):</h4>
         <div class="vocab-item">
           <div class="vocab-text">
             <div class="mandarin">妈</div>
-            <div class="pinyin">mā (1º tom - Alto e contínuo)</div>
+            <div class="pinyin">mā (1º tom)</div>
             <div class="meaning">Mãe</div>
           </div>
           <div class="audio-btns">
@@ -403,8 +500,8 @@
         <div class="vocab-item">
           <div class="vocab-text">
             <div class="mandarin">麻</div>
-            <div class="pinyin">má (2º tom - Subindo / pergunta)</div>
-            <div class="meaning">Erva / cânhamo / formigamento</div>
+            <div class="pinyin">má (2º tom)</div>
+            <div class="meaning">Erva / cânhamo</div>
           </div>
           <div class="audio-btns">
             <button class="btn-audio" onclick="speak('麻')">🔊</button>
@@ -415,7 +512,7 @@
         <div class="vocab-item">
           <div class="vocab-text">
             <div class="mandarin">马</div>
-            <div class="pinyin">mǎ (3º tom - Desce e sobe)</div>
+            <div class="pinyin">mǎ (3º tom)</div>
             <div class="meaning">Cavalo</div>
           </div>
           <div class="audio-btns">
@@ -427,7 +524,7 @@
         <div class="vocab-item">
           <div class="vocab-text">
             <div class="mandarin">骂</div>
-            <div class="pinyin">mà (4º tom - Seco / ordem descendente)</div>
+            <div class="pinyin">mà (4º tom)</div>
             <div class="meaning">Xingar / repreender</div>
           </div>
           <div class="audio-btns">
@@ -439,8 +536,8 @@
         <div class="vocab-item">
           <div class="vocab-text">
             <div class="mandarin">吗</div>
-            <div class="pinyin">ma (Tom Neutro - Curto e leve)</div>
-            <div class="meaning">Partícula de pergunta no fim da frase (?)</div>
+            <div class="pinyin">ma (Tom neutro)</div>
+            <div class="meaning">Partícula de pergunta (?)</div>
           </div>
           <div class="audio-btns">
             <button class="btn-audio" onclick="speak('吗')">🔊</button>
@@ -448,14 +545,12 @@
           </div>
         </div>
 
-        <!-- Família ZHU -->
-        <h4 style="font-size: 0.9rem; margin: 16px 0 8px; color: var(--text-sub);">O Ideograma "ZHU" e seus tons:</h4>
-        
+        <h4 style="font-size: 0.85rem; margin: 16px 0 8px; color: var(--text-sub);">Família ZHU:</h4>
         <div class="vocab-item">
           <div class="vocab-text">
-            <div class="mandarin">猪 / 珠</div>
+            <div class="mandarin">猪</div>
             <div class="pinyin">zhū (1º tom)</div>
-            <div class="meaning">Porco / Pérola</div>
+            <div class="meaning">Porco</div>
           </div>
           <div class="audio-btns">
             <button class="btn-audio" onclick="speak('猪')">🔊</button>
@@ -500,14 +595,11 @@
         </div>
       </div>
 
-      <!-- Lição 2: Saudações Essenciais -->
+      <!-- Lição 2: Saudações -->
       <div class="card">
         <div class="card-title">
           <span>☀️</span>
-          <h3>Lição 2: Saudações e Cumprimentos</h3>
-        </div>
-        <div class="tip-box">
-          A palavra <b>好 (hǎo)</b> significa "bom" ou "bem". Ao colocá-la após um período do dia ou pronome, você forma saudações naturais!
+          <h3>Lição 2: Saudações Essenciais</h3>
         </div>
 
         <div class="vocab-item">
@@ -538,7 +630,7 @@
           <div class="vocab-text">
             <div class="mandarin">晚上好</div>
             <div class="pinyin">wǎnshang hǎo</div>
-            <div class="meaning">Boa noite (ao chegar/encontrar)</div>
+            <div class="meaning">Boa noite (ao encontrar)</div>
           </div>
           <div class="audio-btns">
             <button class="btn-audio" onclick="speak('晚上好')">🔊</button>
@@ -550,7 +642,7 @@
           <div class="vocab-text">
             <div class="mandarin">晚安</div>
             <div class="pinyin">wǎn'ān</div>
-            <div class="meaning">Boa noite (despedida / ao dormir)</div>
+            <div class="meaning">Boa noite (ao se despedir para dormir)</div>
           </div>
           <div class="audio-btns">
             <button class="btn-audio" onclick="speak('晚安')">🔊</button>
@@ -595,11 +687,11 @@
         </div>
       </div>
 
-      <!-- Lição 3: Cortesia e Primeiras Frases -->
+      <!-- Lição 3: Cortesia e Sobrevivência -->
       <div class="card">
         <div class="card-title">
           <span>🤝</span>
-          <h3>Lição 3: Cortesia e Sobrevivência</h3>
+          <h3>Lição 3: Cortesia e Primeiras Frases</h3>
         </div>
 
         <div class="vocab-item">
@@ -618,7 +710,7 @@
           <div class="vocab-text">
             <div class="mandarin">不客气</div>
             <div class="pinyin">bú kèqì</div>
-            <div class="meaning">De nada / Não há de quê</div>
+            <div class="meaning">De nada</div>
           </div>
           <div class="audio-btns">
             <button class="btn-audio" onclick="speak('不客气')">🔊</button>
@@ -630,7 +722,7 @@
           <div class="vocab-text">
             <div class="mandarin">对不起</div>
             <div class="pinyin">duìbùqǐ</div>
-            <div class="meaning">Desculpe / Perdão</div>
+            <div class="meaning">Desculpe</div>
           </div>
           <div class="audio-btns">
             <button class="btn-audio" onclick="speak('对不起')">🔊</button>
@@ -700,54 +792,118 @@
       </div>
     </section>
 
-    <!-- ABA 2: GUIA FONÉTICO -->
+    <!-- ABA 2: TONS & FONÉTICA (COM ÁUDIO INTEGRADO) -->
     <section id="tab-fonetica" class="tab-content">
       <div class="card">
         <div class="card-title">
           <span>🗣️</span>
-          <h3>Anatomia dos 4 Tons</h3>
+          <h3>Treino Auditivo dos 4 Tons</h3>
         </div>
         <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 12px;">
-          O mandarim possui 4 tons melódicos principais e 1 tom neutro. Mudar a entonação muda a palavra:
+          Toque no botão para ouvir o tom exato em sílabas padrão:
         </p>
 
         <div class="tone-grid">
           <div class="tone-card">
-            <div class="tone-number">1º TOM</div>
-            <div class="tone-symbol">ā</div>
-            <div class="tone-desc">Alto, reto e constante (como uma nota musical sustentada).</div>
+            <div class="tone-number">1º TOM (Alto & Reto)</div>
+            <div class="tone-symbol">mā</div>
+            <div class="tone-desc">Tom constante, sem oscilar.</div>
+            <div class="audio-btns">
+              <button class="btn-audio" onclick="speak('妈')">🔊</button>
+              <button class="btn-audio slow" onclick="speak('妈', true)">🐢</button>
+            </div>
           </div>
+
           <div class="tone-card">
-            <div class="tone-number">2º TOM</div>
-            <div class="tone-symbol">á</div>
-            <div class="tone-desc">Ascendente (como fazer uma pergunta: "Hã?!").</div>
+            <div class="tone-number">2º TOM (Ascendente)</div>
+            <div class="tone-symbol">má</div>
+            <div class="tone-desc">Sobe como uma dúvida ("Oi?").</div>
+            <div class="audio-btns">
+              <button class="btn-audio" onclick="speak('麻')">🔊</button>
+              <button class="btn-audio slow" onclick="speak('麻', true)">🐢</button>
+            </div>
           </div>
+
           <div class="tone-card">
-            <div class="tone-number">3º TOM</div>
-            <div class="tone-symbol">ǎ</div>
-            <div class="tone-desc">Cai ao fundo da garganta e sobe levemente.</div>
+            <div class="tone-number">3º TOM (Desce e Sobe)</div>
+            <div class="tone-symbol">mǎ</div>
+            <div class="tone-desc">Mergulha e tem leve subida.</div>
+            <div class="audio-btns">
+              <button class="btn-audio" onclick="speak('马')">🔊</button>
+              <button class="btn-audio slow" onclick="speak('马', true)">🐢</button>
+            </div>
           </div>
+
           <div class="tone-card">
-            <div class="tone-number">4º TOM</div>
-            <div class="tone-symbol">à</div>
-            <div class="tone-desc">Descendente e rápido (como uma ordem firme: "Não!").</div>
+            <div class="tone-number">4º TOM (Descendente)</div>
+            <div class="tone-symbol">mà</div>
+            <div class="tone-desc">Seco e rápido ("Não!").</div>
+            <div class="audio-btns">
+              <button class="btn-audio" onclick="speak('骂')">🔊</button>
+              <button class="btn-audio slow" onclick="speak('骂', true)">🐢</button>
+            </div>
           </div>
         </div>
 
         <div class="card-title" style="margin-top: 20px;">
           <span>🎯</span>
-          <h3>Dicas de Sons (Pinyin x Português)</h3>
+          <h3>Dicas de Sons: Pinyin vs Português (com Áudio)</h3>
         </div>
-        <ul style="font-size: 0.85rem; color: var(--text); padding-left: 18px; line-height: 1.6;">
-          <li><b>zh:</b> Soa como "dj" firme em português (ex: <i>zhū</i> lembra "dju").</li>
-          <li><b>x:</b> Soa como o "ch" ou "sh" suave soprado (ex: <i>xièxie</i> lembra "shie-shie").</li>
-          <li><b>q:</b> Soa como "tchi" aspirado bem pontual.</li>
-          <li><b>c:</b> Soa como "ts" no final de "pizza" (ex: <i>cì</i>).</li>
-        </ul>
+        <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 12px;">
+          Ouça exemplos reais da Semana 1 para treinar as consoantes mais desafiadoras:
+        </p>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">zh → 猪 (zhū)</div>
+            <div class="pinyin">Som de "dj" firme (como "dju")</div>
+            <div class="meaning">Exemplo: Porco</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('猪')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('猪', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">x → 谢谢 (xièxie)</div>
+            <div class="pinyin">Som de "ch" ou "sh" suave e assoprado</div>
+            <div class="meaning">Exemplo: Obrigado</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('谢谢')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('谢谢', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">q → 请问 (qǐngwèn)</div>
+            <div class="pinyin">Som de "tchi" aspirado bem pontual</div>
+            <div class="meaning">Exemplo: Com licença/Por favor</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('请问')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('请问', true)">🐢</button>
+          </div>
+        </div>
+
+        <div class="vocab-item">
+          <div class="vocab-text">
+            <div class="mandarin">c → 次 (cì)</div>
+            <div class="pinyin">Som de "ts" (como no final de "pizza")</div>
+            <div class="meaning">Exemplo: Vez (ocorrência)</div>
+          </div>
+          <div class="audio-btns">
+            <button class="btn-audio" onclick="speak('次')">🔊</button>
+            <button class="btn-audio slow" onclick="speak('次', true)">🐢</button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ABA 3: QUIZ DE DESBLOQUEIO -->
+    <!-- ABA 3: QUIZ COM GRAVAÇÃO POR ALUNO -->
     <section id="tab-quiz" class="tab-content">
       <div class="card">
         <div class="card-title">
@@ -755,11 +911,11 @@
           <h3>Desafio de Retenção da Semana 1</h3>
         </div>
         <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 16px;">
-          Responda corretamente às perguntas para registrar e validar o seu progresso da semana.
+          A sua nota será registrada individualmente no seu perfil de aluno.
         </p>
 
         <div id="quiz-container">
-          <div class="quiz-question" id="quiz-q">Carregando pergunta...</div>
+          <div class="quiz-question" id="quiz-q">Carregando...</div>
           <div class="quiz-options" id="quiz-opts"></div>
           <div class="feedback-box" id="quiz-feedback"></div>
           <button class="btn-primary" id="quiz-next-btn" style="display: none;" onclick="nextQuestion()">Próxima Pergunta</button>
@@ -768,7 +924,7 @@
     </section>
   </main>
 
-  <!-- Barra de Abas Inferior (Mobile Style) -->
+  <!-- Barra de Navegação -->
   <nav class="tab-bar">
     <button class="tab-btn active" onclick="switchTab('tab-licoes', this)">
       <svg fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a10.974 10.974 0 014.75-2.05V4.5a1 1 0 012 0v1.5a10.974 10.974 0 014.75 2.051l2.644-1.13a1 1 0 000-1.84l-7-3zM4 11.5v3.75A6.5 6.5 0 0010 21.75a6.5 6.5 0 006-6.5V11.5l-6 2.57-6-2.57z"/></svg>
@@ -785,20 +941,138 @@
   </nav>
 
   <script>
-    // 1. Áudio Nativo via Web Speech API (Mandarim zh-CN)
-    function speak(text, slow = false) {
-      if (!('speechSynthesis' in window)) {
-        alert('Seu navegador não suporta áudio nativo.');
-        return;
+    /* ==========================================================
+       1. MOTOR DE ÁUDIO RESISTENTE A NAVEGADORES MOBILE
+       ========================================================== */
+    let availableVoices = [];
+
+    function initAudioEngine() {
+      if ('speechSynthesis' in window) {
+        availableVoices = window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = () => {
+          availableVoices = window.speechSynthesis.getVoices();
+        };
       }
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'zh-CN';
-      utterance.rate = slow ? 0.65 : 0.95;
-      window.speechSynthesis.speak(utterance);
     }
 
-    // 2. Navegação de Abas
+    function speak(text, slow = false) {
+      if (!('speechSynthesis' in window)) {
+        alert('Este navegador não tem suporte à síntese de voz.');
+        return;
+      }
+
+      // Destrava o motor caso esteja pausado no Android/iOS
+      window.speechSynthesis.resume();
+      window.speechSynthesis.cancel();
+
+      // Delay de 40ms para contornar o congelamento do Chrome Mobile
+      setTimeout(() => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'zh-CN';
+        utterance.rate = slow ? 0.65 : 0.95;
+
+        // Procura explicitamente uma voz em chinês instalada no aparelho
+        if (availableVoices.length === 0) {
+          availableVoices = window.speechSynthesis.getVoices();
+        }
+        const zhVoice = availableVoices.find(v => 
+          v.lang === 'zh-CN' || v.lang === 'zh' || v.lang.toLowerCase().includes('chinese')
+        );
+        if (zhVoice) {
+          utterance.voice = zhVoice;
+        }
+
+        window.speechSynthesis.speak(utterance);
+      }, 40);
+    }
+
+    /* ==========================================================
+       2. GESTÃO DE ALUNOS E EVOLUÇÃO CUMULATIVA (LOCALSTORAGE)
+       ========================================================== */
+    const DB_KEY = 'mandarim_learning_database';
+    let currentStudent = null;
+
+    function getDatabase() {
+      const data = localStorage.getItem(DB_KEY);
+      return data ? JSON.parse(data) : { currentStudent: null, students: {} };
+    }
+
+    function saveDatabase(db) {
+      localStorage.setItem(DB_KEY, JSON.stringify(db));
+    }
+
+    function openUserModal() {
+      const db = getDatabase();
+      const modal = document.getElementById('user-modal');
+      const studentList = document.getElementById('student-list');
+      const existingContainer = document.getElementById('existing-students-container');
+      const names = Object.keys(db.students);
+
+      studentList.innerHTML = '';
+      if (names.length > 0) {
+        existingContainer.style.display = 'block';
+        names.forEach(name => {
+          const item = document.createElement('div');
+          item.className = 'student-item';
+          item.innerHTML = `<span>${name}</span> <span style="color: var(--primary); font-size: 0.8rem;">Selecionar →</span>`;
+          item.onclick = () => selectExistingStudent(name);
+          studentList.appendChild(item);
+        });
+      } else {
+        existingContainer.style.display = 'none';
+      }
+
+      document.getElementById('student-name-input').value = '';
+      modal.style.display = 'flex';
+    }
+
+    function confirmStudent() {
+      const input = document.getElementById('student-name-input');
+      const name = input.value.trim();
+      if (!name) {
+        alert('Por favor, informe um nome.');
+        return;
+      }
+      selectExistingStudent(name);
+    }
+
+    function selectExistingStudent(name) {
+      const db = getDatabase();
+      if (!db.students[name]) {
+        // Inicializa o histórico cumulativo do novo aluno
+        db.students[name] = {
+          createdAt: new Date().toISOString(),
+          semana1: { progress: 0, score: 0 }
+          // Semanas futuras serão anexadas aqui preservando o histórico!
+        };
+      }
+      db.currentStudent = name;
+      saveDatabase(db);
+      currentStudent = name;
+
+      // Destrava o áudio via gesto de toque
+      speak('', false);
+
+      document.getElementById('user-modal').style.display = 'none';
+      updateStudentUI();
+      loadQuiz();
+    }
+
+    function updateStudentUI() {
+      const db = getDatabase();
+      if (!currentStudent || !db.students[currentStudent]) return;
+
+      document.getElementById('display-user-name').textContent = currentStudent;
+      const s1 = db.students[currentStudent].semana1 || { progress: 0 };
+      
+      document.getElementById('progress-percent').textContent = `${s1.progress}%`;
+      document.getElementById('progress-fill').style.width = `${s1.progress}%`;
+      document.getElementById('progress-status').textContent = s1.progress >= 75 ? 'Concluído' : 'Em andamento';
+    }
+
+    /* ==========================================================
+       3. NAVEGAÇÃO DE ABAS
+       ========================================================== */
     function switchTab(tabId, el) {
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -807,31 +1081,33 @@
       window.scrollTo(0, 0);
     }
 
-    // 3. Quiz da Semana 1 com Validação de Progresso
+    /* ==========================================================
+       4. QUIZ DE VALIDAÇÃO SEMANAL
+       ========================================================== */
     const questions = [
       {
         q: "Como se diz 'Bom dia' em mandarim?",
         options: ["Xiàwǔ hǎo (下午好)", "Zǎoshang hǎo (早上好)", "Wǎn'ān (晚安)", "Nǐ hǎo (你好)"],
         answer: 1,
-        explain: "早上好 (Zǎoshang hǎo) é composto por 早上 (manhã) + 好 (bom/bem)."
+        explain: "早上好 (Zǎoshang hǎo) é 'Bom dia'. 早上 significa manhã e 好 significa bom."
       },
       {
         q: "Qual é o significado do ideograma 猪 (zhū com 1º tom)?",
         options: ["Bambu", "Cozinhar", "Porco", "Morar"],
         answer: 2,
-        explain: "猪 (zhū, 1º tom) significa 'porco'. Já 竹 (zhú, 2º tom) é bambu e 煮 (zhǔ, 3º tom) é cozinhar."
+        explain: "猪 (zhū, 1º tom) é 'porco'. 竹 (zhú, 2º) é bambu e 煮 (zhǔ, 3º) é cozinhar."
       },
       {
         q: "Qual partícula indica uma pergunta direta no final da frase (ex: Nǐ hǎo ____?)",
         options: ["ne (呢)", "ma (吗)", "de (的)", "ba (吧)"],
         answer: 1,
-        explain: "A partícula 吗 (ma) transforma frases declarativas em perguntas de sim/não: 你好 (Olá) -> 你好吗? (Como vai?)."
+        explain: "A partícula 吗 (ma) no fim da oração transforma afirmativas em perguntas de sim/não."
       },
       {
         q: "O que significa a expressão 'Wǒ shì bāxī rén' (我是巴西人)?",
         options: ["Eu falo mandarim", "Eu sou estudante", "Eu sou brasileiro(a)", "Eu moro no Brasil"],
         answer: 2,
-        explain: "我是 (Wǒ shì = Eu sou) + 巴西人 (Bāxī rén = Pessoa do Brasil / Brasileiro)."
+        explain: "我是 (Wǒ shì = Eu sou) + 巴西人 (Bāxī rén = Brasileiro/Pessoa do Brasil)."
       }
     ];
 
@@ -895,18 +1171,27 @@
       const container = document.getElementById('quiz-container');
       const percentage = Math.round((score / questions.length) * 100);
       
-      // Salva progresso no localStorage do celular
-      localStorage.setItem('mandarim_semana1_progress', percentage);
-      updateProgressDisplay();
+      // Salva no perfil do aluno atual
+      const db = getDatabase();
+      if (currentStudent && db.students[currentStudent]) {
+        db.students[currentStudent].semana1 = {
+          progress: percentage,
+          score: score,
+          completedAt: new Date().toISOString()
+        };
+        saveDatabase(db);
+        updateStudentUI();
+      }
 
       container.innerHTML = `
         <div style="text-align: center; padding: 20px 0;">
           <div style="font-size: 3rem; margin-bottom: 12px;">🎉</div>
-          <h3 style="font-size: 1.3rem; margin-bottom: 8px;">Semana 1 Concluída!</h3>
+          <h3 style="font-size: 1.3rem; margin-bottom: 8px;">Semana 1 Finalizada!</h3>
           <p style="font-size: 0.95rem; color: var(--text-sub); margin-bottom: 20px;">
-            Você acertou <b>${score} de ${questions.length}</b> perguntas (${percentage}% de retenção).
+            Aluno: <b>${currentStudent}</b><br>
+            Acertos: <b>${score} de ${questions.length}</b> (${percentage}% de retenção)
           </p>
-          <button class="btn-primary" onclick="restartQuiz()">Refazer Quiz</button>
+          <button class="btn-primary" onclick="restartQuiz()">Refazer Desafio</button>
         </div>
       `;
     }
@@ -914,21 +1199,23 @@
     function restartQuiz() {
       currentQ = 0;
       score = 0;
-      location.reload();
-    }
-
-    function updateProgressDisplay() {
-      const saved = localStorage.getItem('mandarim_semana1_progress') || 0;
-      document.getElementById('progress-percent').textContent = `${saved}%`;
-      document.getElementById('progress-fill').style.width = `${saved}%`;
-    }
-
-    // Inicialização
-    window.onload = () => {
-      updateProgressDisplay();
       loadQuiz();
+    }
+
+    /* ==========================================================
+       5. INICIALIZAÇÃO DO SISTEMA
+       ========================================================== */
+    window.onload = () => {
+      initAudioEngine();
+      const db = getDatabase();
+      if (!db.currentStudent) {
+        openUserModal();
+      } else {
+        currentStudent = db.currentStudent;
+        updateStudentUI();
+        loadQuiz();
+      }
     };
   </script>
 </body>
 </html>
-
