@@ -2,8 +2,9 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Mandarim Prático - Vocabulário & Áudio</title>
+  <title>Mandarim Oral - Foco em Vocabulário</title>
   <style>
     :root {
       --china-red: #C8102E;
@@ -34,7 +35,7 @@
       padding-bottom: 90px;
     }
 
-    /* Modais */
+    /* Modal de Aluno */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -272,7 +273,7 @@
       margin-bottom: 12px;
     }
 
-    /* Itens de Vocabulário */
+    /* Itens de Vocabulário com Pinyin em Destaque */
     .vocab-item {
       display: flex;
       align-items: center;
@@ -327,7 +328,7 @@
 
     .audio-btns {
       display: flex;
-      gap: 5px;
+      gap: 6px;
       align-items: center;
     }
 
@@ -335,13 +336,13 @@
       background: #FFF;
       border: 1px solid var(--border);
       border-radius: 50%;
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 0.95rem;
+      font-size: 1rem;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
     }
 
@@ -354,12 +355,6 @@
       font-size: 0.72rem;
       font-weight: 800;
       color: var(--gold-accent);
-    }
-
-    .btn-audio.gt {
-      font-size: 0.85rem;
-      color: #1A73E8;
-      background: #F8FAFC;
     }
 
     /* Tons */
@@ -557,16 +552,19 @@
 </head>
 <body>
 
+  <!-- Player global invisível -->
+  <audio id="global-player" preload="none" playsinline></audio>
+
   <!-- Modal Identificação -->
   <div class="modal-overlay" id="user-modal" style="display: none;">
     <div class="modal-box">
       <h2 class="modal-title"><span>🏮</span> Painel do Aluno</h2>
-      <p class="modal-desc">Identifique-se para carregar ou salvar o seu progresso individual:</p>
+      <p class="modal-desc">Identifique-se para carregar ou iniciar o seu histórico persistente:</p>
       
       <input type="text" id="student-name-input" class="input-field" placeholder="Ex: Carlos Silva" />
 
       <div id="existing-students-container" style="display: none;">
-        <p style="font-size: 0.78rem; font-weight: 700; color: var(--gold-accent); margin-bottom: 6px;">Alunos registrados:</p>
+        <p style="font-size: 0.78rem; font-weight: 700; color: var(--gold-accent); margin-bottom: 6px;">Alunos registrados neste aparelho:</p>
         <div class="student-list" id="student-list"></div>
       </div>
 
@@ -613,7 +611,7 @@
     </div>
   </header>
 
-  <!-- Navegador de Semanas com Cadeados -->
+  <!-- Navegador de Semanas -->
   <div class="week-nav">
     <button class="week-pill active" id="btn-week-1" onclick="trySelectWeek(1)">Semana 1</button>
     <button class="week-pill locked" id="btn-week-2" onclick="trySelectWeek(2)">🔒 Semana 2</button>
@@ -627,9 +625,9 @@
       <!-- ================= SEMANA 1 ================= -->
       <div id="week-1-content">
         <div class="card">
-          <div class="card-title"><span>🔊</span> Tons Fundamentais: Sons MA & ZHU (S1)</div>
+          <div class="card-title"><span>🔊</span> Tons Fundamentais: Som MA & ZHU (S1)</div>
           <div class="tip-box">
-            Toque em <b>🔊</b> para ouvir a voz nativa direta ou <b>🐢</b> para ritmo lento.
+            Foque na pronúncia em <b>Pinyin</b>. Toque em <b>🔊</b> para velocidade normal ou <b>🐢</b> para lento.
           </div>
 
           <!-- Família MA -->
@@ -641,8 +639,8 @@
               <span class="hanzi-sub">Ideograma: 妈</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('妈')">🔊</button>
-              <button class="btn-audio slow" onclick="speakNative('妈', true)">🐢</button>
+              <button class="btn-audio" onclick="playSpeech('妈')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('妈', true)">🐢</button>
             </div>
           </div>
 
@@ -654,8 +652,8 @@
               <span class="hanzi-sub">Ideograma: 麻</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('麻')">🔊</button>
-              <button class="btn-audio slow" onclick="speakNative('麻', true)">🐢</button>
+              <button class="btn-audio" onclick="playSpeech('麻')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('麻', true)">🐢</button>
             </div>
           </div>
 
@@ -667,8 +665,8 @@
               <span class="hanzi-sub">Ideograma: 马</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('马')">🔊</button>
-              <button class="btn-audio slow" onclick="speakNative('马', true)">🐢</button>
+              <button class="btn-audio" onclick="playSpeech('马')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('马', true)">🐢</button>
             </div>
           </div>
 
@@ -680,8 +678,8 @@
               <span class="hanzi-sub">Ideograma: 骂</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('骂')">🔊</button>
-              <button class="btn-audio slow" onclick="speakNative('骂', true)">🐢</button>
+              <button class="btn-audio" onclick="playSpeech('骂')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('骂', true)">🐢</button>
             </div>
           </div>
 
@@ -689,17 +687,16 @@
             <div class="vocab-icon">❓</div>
             <div class="vocab-text">
               <div class="pinyin-main">ma (Tom Neutro)</div>
-              <div class="meaning-main">Partícula interrogativa final (?)</div>
+              <div class="meaning-main">Partícula interrogativa (?)</div>
               <span class="hanzi-sub">Ideograma: 吗</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('吗')">🔊</button>
-              <button class="btn-audio slow" onclick="speakNative('吗', true)">🐢</button>
+              <button class="btn-audio" onclick="playSpeech('吗')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('吗', true)">🐢</button>
             </div>
           </div>
 
-          <!-- Família ZHU -->
-          <div style="margin: 14px 0 6px; font-weight: 800; font-size: 0.85rem; color: var(--gold-accent);">Variações de Tom com a Sílaba ZHU:</div>
+          <div style="margin: 14px 0 6px; font-weight: 800; font-size: 0.85rem; color: var(--gold-accent);">Família ZHU:</div>
 
           <div class="vocab-item">
             <div class="vocab-icon">🐷</div>
@@ -709,8 +706,8 @@
               <span class="hanzi-sub">Ideogramas: 猪 / 珠</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('猪')">🔊</button>
-              <button class="btn-audio slow" onclick="speakNative('猪', true)">🐢</button>
+              <button class="btn-audio" onclick="playSpeech('猪')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('猪', true)">🐢</button>
             </div>
           </div>
 
@@ -722,8 +719,8 @@
               <span class="hanzi-sub">Ideograma: 竹</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('竹')">🔊</button>
-              <button class="btn-audio slow" onclick="speakNative('竹', true)">🐢</button>
+              <button class="btn-audio" onclick="playSpeech('竹')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('竹', true)">🐢</button>
             </div>
           </div>
 
@@ -735,8 +732,8 @@
               <span class="hanzi-sub">Ideograma: 煮</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('煮')">🔊</button>
-              <button class="btn-audio slow" onclick="speakNative('煮', true)">🐢</button>
+              <button class="btn-audio" onclick="playSpeech('煮')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('煮', true)">🐢</button>
             </div>
           </div>
 
@@ -748,18 +745,15 @@
               <span class="hanzi-sub">Ideogramas: 住 / 祝</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('住')">🔊</button>
-              <button class="btn-audio slow" onclick="speakNative('住', true)">🐢</button>
+              <button class="btn-audio" onclick="playSpeech('住')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('住', true)">🐢</button>
             </div>
           </div>
         </div>
 
-        <!-- Saudações e Frases -->
+        <!-- Saudações da Semana 1 -->
         <div class="card">
-          <div class="card-title"><span>🌅</span> Saudações e Cortesia (S1)</div>
-          <div class="tip-box">
-            Toque em <b>🌐</b> para abrir a frase com áudio nativo oficial no Google Tradutor.
-          </div>
+          <div class="card-title"><span>🌅</span> Saudações do Dia a Dia (S1)</div>
 
           <div class="vocab-item">
             <div class="vocab-icon">☀️</div>
@@ -769,8 +763,8 @@
               <span class="hanzi-sub">早上好</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('早上好')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('早上好')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('早上好')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('早上好', true)">🐢</button>
             </div>
           </div>
 
@@ -782,8 +776,8 @@
               <span class="hanzi-sub">下午好</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('下午好')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('下午好')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('下午好')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('下午好', true)">🐢</button>
             </div>
           </div>
 
@@ -795,8 +789,8 @@
               <span class="hanzi-sub">晚上好</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('晚上好')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('晚上好')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('晚上好')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('晚上好', true)">🐢</button>
             </div>
           </div>
 
@@ -808,8 +802,8 @@
               <span class="hanzi-sub">晚安</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('晚安')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('晚安')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('晚安')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('晚安', true)">🐢</button>
             </div>
           </div>
 
@@ -821,8 +815,8 @@
               <span class="hanzi-sub">你好</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('你好')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('你好')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('你好')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('你好', true)">🐢</button>
             </div>
           </div>
 
@@ -834,8 +828,8 @@
               <span class="hanzi-sub">你好吗</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('你好吗')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('你好吗')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('你好吗')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('你好吗', true)">🐢</button>
             </div>
           </div>
 
@@ -847,8 +841,8 @@
               <span class="hanzi-sub">我很好，你呢</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('我很好，你呢')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('我很好，你呢')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('我很好，你呢')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('我很好，你呢', true)">🐢</button>
             </div>
           </div>
 
@@ -860,8 +854,8 @@
               <span class="hanzi-sub">谢谢</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('谢谢')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('谢谢')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('谢谢')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('谢谢', true)">🐢</button>
             </div>
           </div>
 
@@ -873,8 +867,8 @@
               <span class="hanzi-sub">不客气</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('不客气')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('不客气')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('不客气')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('不客气', true)">🐢</button>
             </div>
           </div>
 
@@ -886,8 +880,8 @@
               <span class="hanzi-sub">对不起</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('对不起')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('对不起')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('对不起')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('对不起', true)">🐢</button>
             </div>
           </div>
 
@@ -899,8 +893,8 @@
               <span class="hanzi-sub">再见</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('再见')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('再见')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('再见')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('再见', true)">🐢</button>
             </div>
           </div>
 
@@ -912,8 +906,8 @@
               <span class="hanzi-sub">欢迎</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('欢迎')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('欢迎')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('欢迎')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('欢迎', true)">🐢</button>
             </div>
           </div>
 
@@ -925,8 +919,8 @@
               <span class="hanzi-sub">请问</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('请问')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('请问')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('请问')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('请问', true)">🐢</button>
             </div>
           </div>
 
@@ -938,8 +932,8 @@
               <span class="hanzi-sub">我是巴西人</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('我是巴西人')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('我是巴西人')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('我是巴西人')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('我是巴西人', true)">🐢</button>
             </div>
           </div>
 
@@ -951,8 +945,8 @@
               <span class="hanzi-sub">这个中文叫什么</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('这个中文叫什么')">🔊</button>
-              <button class="btn-audio gt" title="Ouvir no Google Tradutor" onclick="openGoogleTranslate('这个中文叫什么')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('这个中文叫什么')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('这个中文叫什么', true)">🐢</button>
             </div>
           </div>
         </div>
@@ -962,9 +956,6 @@
       <div id="week-2-content" style="display: none;">
         <div class="card">
           <div class="card-title"><span>👥</span> Pronomes Pessoais e Possessivos (S2)</div>
-          <div class="tip-box">
-            Adicionar <b>de (的)</b> após o pronome expressa posse (meu, seu, dele).
-          </div>
 
           <div class="vocab-item">
             <div class="vocab-icon">👤</div>
@@ -974,8 +965,7 @@
               <span class="hanzi-sub">我 / 我的</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('我')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('我，我的')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('我，我的')">🔊</button>
             </div>
           </div>
 
@@ -987,8 +977,7 @@
               <span class="hanzi-sub">你 / 你的</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('你')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('你，你的')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('你，你的')">🔊</button>
             </div>
           </div>
 
@@ -1000,8 +989,7 @@
               <span class="hanzi-sub">他 / 他的</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('他')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('他，他的')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('他，他的')">🔊</button>
             </div>
           </div>
 
@@ -1013,8 +1001,7 @@
               <span class="hanzi-sub">她 / 她的</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('她')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('她，她的')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('她，她的')">🔊</button>
             </div>
           </div>
 
@@ -1026,8 +1013,7 @@
               <span class="hanzi-sub">我们 / 我们的</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('我们')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('我们，我们的')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('我们，我们的')">🔊</button>
             </div>
           </div>
 
@@ -1039,8 +1025,7 @@
               <span class="hanzi-sub">你们 / 你们的</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('你们')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('你们，你们的')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('你们，你们的')">🔊</button>
             </div>
           </div>
 
@@ -1052,12 +1037,12 @@
               <span class="hanzi-sub">他们 / 他们的</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('他们')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('他们，他们的')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('他们，他们的')">🔊</button>
             </div>
           </div>
         </div>
 
+        <!-- Apresentação e Verbos -->
         <div class="card">
           <div class="card-title"><span>🏷️</span> Apresentação e Verbos de Ação (S2)</div>
 
@@ -1069,8 +1054,7 @@
               <span class="hanzi-sub">大家好</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('大家好')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('大家好')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('大家好')">🔊</button>
             </div>
           </div>
 
@@ -1082,8 +1066,7 @@
               <span class="hanzi-sub">我叫 / 你叫</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('我叫')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('我叫，你叫')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('我叫，你叫')">🔊</button>
             </div>
           </div>
 
@@ -1095,8 +1078,7 @@
               <span class="hanzi-sub">认识你很高兴</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('认识你很高兴')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('认识你很高兴')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('认识你很高兴')">🔊</button>
             </div>
           </div>
 
@@ -1108,7 +1090,7 @@
               <span class="hanzi-sub">是</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('是')">🔊</button>
+              <button class="btn-audio" onclick="playSpeech('是')">🔊</button>
             </div>
           </div>
 
@@ -1120,7 +1102,7 @@
               <span class="hanzi-sub">在</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('在')">🔊</button>
+              <button class="btn-audio" onclick="playSpeech('在')">🔊</button>
             </div>
           </div>
 
@@ -1132,7 +1114,7 @@
               <span class="hanzi-sub">去</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('去')">🔊</button>
+              <button class="btn-audio" onclick="playSpeech('去')">🔊</button>
             </div>
           </div>
 
@@ -1144,7 +1126,7 @@
               <span class="hanzi-sub">要</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('要')">🔊</button>
+              <button class="btn-audio" onclick="playSpeech('要')">🔊</button>
             </div>
           </div>
 
@@ -1156,7 +1138,7 @@
               <span class="hanzi-sub">有</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('有')">🔊</button>
+              <button class="btn-audio" onclick="playSpeech('有')">🔊</button>
             </div>
           </div>
 
@@ -1168,7 +1150,7 @@
               <span class="hanzi-sub">可以</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('可以')">🔊</button>
+              <button class="btn-audio" onclick="playSpeech('可以')">🔊</button>
             </div>
           </div>
 
@@ -1180,7 +1162,7 @@
               <span class="hanzi-sub">说</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('说')">🔊</button>
+              <button class="btn-audio" onclick="playSpeech('说')">🔊</button>
             </div>
           </div>
 
@@ -1188,16 +1170,16 @@
             <div class="vocab-icon">🧠</div>
             <div class="vocab-text">
               <div class="pinyin-main">huì</div>
-              <div class="meaning-main">Saber (capacidade por treino)</div>
+              <div class="meaning-main">Saber (capacidade prática)</div>
               <span class="hanzi-sub">会</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('会')">🔊</button>
+              <button class="btn-audio" onclick="playSpeech('会')">🔊</button>
             </div>
           </div>
         </div>
 
-        <!-- Países, Nacionalidades e Idiomas -->
+        <!-- Países e Idiomas -->
         <div class="card">
           <div class="card-title"><span>🌍</span> Países, Pessoas & Idiomas (S2)</div>
 
@@ -1209,8 +1191,7 @@
               <span class="hanzi-sub">巴西 / 巴西人</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('巴西，巴西人')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('巴西，巴西人')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('巴西，巴西人')">🔊</button>
             </div>
           </div>
 
@@ -1222,8 +1203,7 @@
               <span class="hanzi-sub">中国 / 中国人 / 中文</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('中国，中国人，中文')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('中国，中国人，中文')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('中国，中国人，中文')">🔊</button>
             </div>
           </div>
 
@@ -1235,8 +1215,7 @@
               <span class="hanzi-sub">美国 / 美国人 / 英文</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('美国，美国人，英文')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('美国，美国人，英文')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('美国，美国人，英文')">🔊</button>
             </div>
           </div>
 
@@ -1248,8 +1227,7 @@
               <span class="hanzi-sub">英国 / 英国人 / 英文</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('英国，英国人，英文')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('英国，英国人，英文')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('英国，英国人，英文')">🔊</button>
             </div>
           </div>
 
@@ -1261,8 +1239,7 @@
               <span class="hanzi-sub">葡萄牙 / 葡萄牙人 / 葡文</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('葡萄牙，葡萄牙人，葡文')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('葡萄牙，葡萄牙人，葡文')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('葡萄牙，葡萄牙人，葡文')">🔊</button>
             </div>
           </div>
 
@@ -1274,8 +1251,7 @@
               <span class="hanzi-sub">德国 / 德国人 / 德文</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('德国，德国人，德文')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('德国，德国人，德文')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('德国，德国人，德文')">🔊</button>
             </div>
           </div>
 
@@ -1287,8 +1263,7 @@
               <span class="hanzi-sub">法国 / 法国人 / 法文</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('法国，法国人，法文')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('法国，法国人，法文')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('法国，法国人，法文')">🔊</button>
             </div>
           </div>
 
@@ -1300,8 +1275,7 @@
               <span class="hanzi-sub">日本 / 日本人 / 日文</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('日本，日本人，日文')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('日本，日本人，日文')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('日本，日本人，日文')">🔊</button>
             </div>
           </div>
 
@@ -1313,8 +1287,7 @@
               <span class="hanzi-sub">意大利 / 意大利人 / 意大利文</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('意大利，意大利人，意大利文')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('意大利，意大利人，意大利文')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('意大利，意大利人，意大利文')">🔊</button>
             </div>
           </div>
 
@@ -1326,8 +1299,7 @@
               <span class="hanzi-sub">西班牙 / 西班牙人 / 西文</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('西班牙，西班牙人，西文')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('西班牙，西班牙人，西文')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('西班牙，西班牙人，西文')">🔊</button>
             </div>
           </div>
         </div>
@@ -1350,20 +1322,18 @@
               <div class="hanzi-sub" id="drill-cn">我是巴西人</div>
             </div>
 
-            <div style="display: flex; gap: 8px; justify-content: center;">
-              <button class="btn-primary" style="padding: 10px; flex: 1;" onclick="playDrillAudio()">🔊 Voz Direta</button>
-              <button class="btn-primary" style="padding: 10px; flex: 1; background: #1A73E8;" onclick="openGoogleTranslate(currentDrill.cn)">🌐 Google Tradutor</button>
-            </div>
+            <button class="btn-primary" style="padding: 12px;" onclick="playDrillAudio()">🔊 Ouvir Frase Completa</button>
           </div>
         </div>
       </div>
 
       <!-- ================= SEMANA 3 ================= -->
       <div id="week-3-content" style="display: none;">
+        <!-- Canção Completa -->
         <div class="card">
           <div class="card-title"><span>🎵</span> Canção: Dāng wǒmen tóng zài yīqǐ (S3)</div>
           <div class="tip-box">
-            Música tradicional ("Quando estamos juntos"). Toque em <b>🔊</b> para ouvir ou em <b>🌐</b> para abrir no Google Tradutor.
+            Música tradicional ("Quando estamos juntos"). Toque em cada verso para ouvir a pronúncia rítmica:
           </div>
 
           <div class="vocab-item">
@@ -1374,8 +1344,8 @@
               <span class="hanzi-sub">当我们同在一起</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('当我们同在一起')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('当我们同在一起')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('当我们同在一起')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('当我们同在一起', true)">🐢</button>
             </div>
           </div>
 
@@ -1387,8 +1357,8 @@
               <span class="hanzi-sub">在一起，在一起</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('在一起，在一起')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('在一起，在一起')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('在一起，在一起')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('在一起，在一起', true)">🐢</button>
             </div>
           </div>
 
@@ -1400,8 +1370,8 @@
               <span class="hanzi-sub">其快乐无比</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('其快乐无比')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('其快乐无比')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('其快乐无比')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('其快乐无比', true)">🐢</button>
             </div>
           </div>
 
@@ -1413,8 +1383,8 @@
               <span class="hanzi-sub">你对着我笑哈哈</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('你对着我笑哈哈')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('你对着我笑哈哈')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('你对着我笑哈哈')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('你对着我笑哈哈', true)">🐢</button>
             </div>
           </div>
 
@@ -1426,21 +1396,17 @@
               <span class="hanzi-sub">我对着你笑嘻嘻</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('我对着你笑嘻嘻')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('我对着你笑嘻嘻')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('我对着你笑嘻嘻')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('我对着你笑嘻嘻', true)">🐢</button>
             </div>
           </div>
 
-          <div style="display: flex; gap: 8px; margin-top: 12px;">
-            <button class="btn-primary" style="flex: 1;" onclick="speakNative('当我们同在一起，在一起，在一起。当我们同在一起，其快乐无比。你对着我笑哈哈，我对着你笑嘻嘻。')">
-              ▶️ Tocar Letra Direta
-            </button>
-            <button class="btn-primary" style="flex: 1; background: #1A73E8;" onclick="openGoogleTranslate('当我们同在一起，在一起，在一起。当我们同在一起，其快乐无比。你对着我笑哈哈，我对着你笑嘻嘻。')">
-              🌐 Ouvir no Google
-            </button>
-          </div>
+          <button class="btn-primary" style="margin-top: 10px;" onclick="playSpeech('当我们同在一起，在一起，在一起。当我们同在一起，其快乐无比。你对着我笑哈哈，我对着你笑嘻嘻。')">
+            ▶️ Tocar Letra Completa em Sequência
+          </button>
         </div>
 
+        <!-- Frases e Diálogos Integrados -->
         <div class="card">
           <div class="card-title"><span>💬</span> Diálogos e Frases Práticas (S3)</div>
 
@@ -1452,8 +1418,7 @@
               <span class="hanzi-sub">你会说中文吗</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('你会说中文吗')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('你会说中文吗')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('你会说中文吗')">🔊</button>
             </div>
           </div>
 
@@ -1465,8 +1430,7 @@
               <span class="hanzi-sub">我会说一点儿中文</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('我会说一点儿中文')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('我会说一点儿中文')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('我会说一点儿中文')">🔊</button>
             </div>
           </div>
 
@@ -1478,8 +1442,7 @@
               <span class="hanzi-sub">他去中国学中文</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('他去中国学中文')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('他去中国学中文')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('他去中国学中文')">🔊</button>
             </div>
           </div>
 
@@ -1491,8 +1454,7 @@
               <span class="hanzi-sub">我可以帮你</span>
             </div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('我可以帮你')">🔊</button>
-              <button class="btn-audio gt" onclick="openGoogleTranslate('我可以帮你')">🌐</button>
+              <button class="btn-audio" onclick="playSpeech('我可以帮你')">🔊</button>
             </div>
           </div>
         </div>
@@ -1510,8 +1472,8 @@
             <div class="tone-symbol">ā</div>
             <div style="font-size: 0.75rem; color: var(--text-sub); margin-bottom: 8px;">Voz alta e contínua</div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('妈')">🔊</button>
-              <button class="btn-audio slow" onclick="speakNative('妈', true)">🐢</button>
+              <button class="btn-audio" onclick="playSpeech('妈')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('妈', true)">🐢</button>
             </div>
           </div>
 
@@ -1520,8 +1482,8 @@
             <div class="tone-symbol">á</div>
             <div style="font-size: 0.75rem; color: var(--text-sub); margin-bottom: 8px;">Subindo ("Hã?!")</div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('麻')">🔊</button>
-              <button class="btn-audio slow" onclick="speakNative('麻', true)">🐢</button>
+              <button class="btn-audio" onclick="playSpeech('麻')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('麻', true)">🐢</button>
             </div>
           </div>
 
@@ -1530,8 +1492,8 @@
             <div class="tone-symbol">ǎ</div>
             <div style="font-size: 0.75rem; color: var(--text-sub); margin-bottom: 8px;">Desce ao fundo e sobe</div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('马')">🔊</button>
-              <button class="btn-audio slow" onclick="speakNative('马', true)">🐢</button>
+              <button class="btn-audio" onclick="playSpeech('马')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('马', true)">🐢</button>
             </div>
           </div>
 
@@ -1540,8 +1502,8 @@
             <div class="tone-symbol">à</div>
             <div style="font-size: 0.75rem; color: var(--text-sub); margin-bottom: 8px;">Seco e firme ("Não!")</div>
             <div class="audio-btns">
-              <button class="btn-audio" onclick="speakNative('骂')">🔊</button>
-              <button class="btn-audio slow" onclick="speakNative('骂', true)">🐢</button>
+              <button class="btn-audio" onclick="playSpeech('骂')">🔊</button>
+              <button class="btn-audio slow" onclick="playSpeech('骂', true)">🐢</button>
             </div>
           </div>
         </div>
@@ -1559,7 +1521,7 @@
             <div class="meaning-main">Pai</div>
           </div>
           <div class="audio-btns">
-            <button class="btn-audio" onclick="speakNative('爸爸')">🔊</button>
+            <button class="btn-audio" onclick="playSpeech('爸爸')">🔊</button>
           </div>
         </div>
 
@@ -1570,7 +1532,7 @@
             <div class="meaning-main">Ter medo / Temer</div>
           </div>
           <div class="audio-btns">
-            <button class="btn-audio" onclick="speakNative('怕')">🔊</button>
+            <button class="btn-audio" onclick="playSpeech('怕')">🔊</button>
           </div>
         </div>
 
@@ -1644,59 +1606,51 @@
 
   <script>
     /* ==========================================================
-       1. SISTEMA DE ÁUDIO SÍNCRONO & ATALHO GOOGLE TRADUTOR
+       1. MOTOR DE ÁUDIO INLINE COM STREAMING LIVRE DE REFERRER
        ========================================================== */
-    let zhVoice = null;
+    const player = document.getElementById('global-player');
 
-    function initVoices() {
-      if ('speechSynthesis' in window) {
-        const list = window.speechSynthesis.getVoices();
-        zhVoice = list.find(v => v.lang === 'zh-CN' || v.lang === 'zh-TW' || v.lang.startsWith('zh') || v.name.toLowerCase().includes('chinese'));
+    function cleanString(text) {
+      if (!text) return '';
+      return text.replace(/[\/／]/g, ' ').replace(/[，。？！\?\!,\.\(\)（）—\-\[\]]/g, '').trim();
+    }
+
+    function playSpeech(text, slow = false) {
+      const clean = cleanString(text);
+      if (!clean) return;
+
+      // URL de streaming direto do Google TTS (desbloqueada pela tag no-referrer)
+      const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=zh-CN&client=tw-ob&q=${encodeURIComponent(clean)}`;
+
+      player.pause();
+      player.src = ttsUrl;
+      player.playbackRate = slow ? 0.72 : 1.0;
+
+      const playPromise = player.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Fallback para o sintetizador interno do aparelho se a conexão oscilar
+          if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(clean);
+            u.lang = 'zh-CN';
+            u.rate = slow ? 0.65 : 0.95;
+            window.speechSynthesis.speak(u);
+          }
+        });
       }
-    }
-
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.onvoiceschanged = initVoices;
-      initVoices();
-    }
-
-    // Execução síncrona no milissegundo do toque
-    function speakNative(text, slow = false) {
-      if (!('speechSynthesis' in window)) {
-        openGoogleTranslate(text);
-        return;
-      }
-      
-      window.speechSynthesis.resume();
-      window.speechSynthesis.cancel();
-
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'zh-CN';
-      u.rate = slow ? 0.65 : 0.95;
-
-      if (!zhVoice) initVoices();
-      if (zhVoice) u.voice = zhVoice;
-
-      window.speechSynthesis.speak(u);
-    }
-
-    // Abertura direta oficial do Google Tradutor
-    function openGoogleTranslate(text) {
-      const clean = text.replace(/[\/／]/g, ' ').trim();
-      const url = `https://translate.google.com/?sl=zh-CN&tl=pt&text=${encodeURIComponent(clean)}&op=translate`;
-      window.open(url, '_blank');
     }
 
     /* ==========================================================
-       2. PERSISTÊNCIA MULTIUSUÁRIO (LOCALSTORAGE)
+       2. HISTÓRICO PERSISTENTE DO ALUNO (LOCALSTORAGE)
        ========================================================== */
-    const DB_KEY = 'mandarim_app_audio_v6';
+    const DB_KEY = 'mandarim_tutor_persistent_v7';
     let currentStudent = null;
     let selectedWeek = 1;
 
     function getDatabase() {
       const data = localStorage.getItem(DB_KEY);
-      return data ? JSON.parse(data) : { currentStudent: null, students: {} };
+      return data ? JSON.parse(data) : { activeStudent: null, students: {} };
     }
 
     function saveDatabase(db) {
@@ -1743,19 +1697,24 @@
       if (!db.students[name]) {
         db.students[name] = {
           createdAt: new Date().toISOString(),
-          semana1: { progress: 0, score: 0 },
-          semana2: { progress: 0, score: 0 },
-          semana3: { progress: 0, score: 0 }
+          lastWeekViewed: 1,
+          semana1: { progress: 0, score: 0, passed: false },
+          semana2: { progress: 0, score: 0, passed: false },
+          semana3: { progress: 0, score: 0, passed: false }
         };
       }
-      db.currentStudent = name;
+      db.activeStudent = name;
       saveDatabase(db);
       currentStudent = name;
 
-      // Destrava síntese de voz no gesto de confirmação
-      speakNative('');
+      // Destrava o player no toque
+      player.play().then(() => player.pause()).catch(() => {});
 
       document.getElementById('user-modal').style.display = 'none';
+      
+      // Carrega a última semana visitada pelo aluno
+      const lastW = db.students[name].lastWeekViewed || 1;
+      setWeek(lastW);
       updateUI();
       loadQuiz();
     }
@@ -1769,7 +1728,7 @@
       if (!currentStudent || !db.students[currentStudent]) return false;
       const prevKey = `semana${w - 1}`;
       const prevData = db.students[currentStudent][prevKey];
-      return prevData && prevData.progress >= 75;
+      return prevData && prevData.passed === true;
     }
 
     function trySelectWeek(w) {
@@ -1790,6 +1749,12 @@
 
     function setWeek(w) {
       selectedWeek = w;
+
+      const db = getDatabase();
+      if (currentStudent && db.students[currentStudent]) {
+        db.students[currentStudent].lastWeekViewed = w;
+        saveDatabase(db);
+      }
 
       document.getElementById('week-1-content').style.display = w === 1 ? 'block' : 'none';
       document.getElementById('week-2-content').style.display = w === 2 ? 'block' : 'none';
@@ -1877,11 +1842,11 @@
     }
 
     function playDrillAudio() {
-      speakNative(currentDrill.cn);
+      playSpeech(currentDrill.cn);
     }
 
     /* ==========================================================
-       5. QUIZZES POR SEMANA
+       5. BANCO DE QUIZZES
        ========================================================== */
     const quizzes = {
       1: [
@@ -1892,10 +1857,10 @@
           explain: "Zǎoshang hǎo é Bom dia (zǎoshang = manhã; hǎo = bom)."
         },
         {
-          q: "Qual é o significado de zhū (com 1º tom alto)?",
+          q: "Qual é o significado de zhū (1º tom alto)?",
           options: ["Bambu", "Cozinhar", "Porco", "Morar"],
           answer: 2,
-          explain: "zhū (1º tom) é 'porco'. zhú (2º tom) é bambu e zhǔ (3º tom) é cozinhar."
+          explain: "zhū (1º tom) = porco. zhú (2º tom) = bambu e zhǔ (3º tom) = cozinhar."
         },
         {
           q: "Como se diz 'Eu sou brasileiro(a)'?",
@@ -1904,10 +1869,10 @@
           explain: "Wǒ shì (Eu sou) + Bāxī rén (Brasileiro)."
         },
         {
-          q: "Qual partícula no final da oração indica pergunta de sim ou não?",
+          q: "Qual partícula no final da oração forma perguntas diretas de sim/não?",
           options: ["ma", "ne", "de", "ba"],
           answer: 0,
-          explain: "A partícula 'ma' no fim da frase indica uma pergunta direta."
+          explain: "A partícula 'ma' no final indica pergunta direta."
         }
       ],
       2: [
@@ -1915,7 +1880,7 @@
           q: "Como se diz 'Prazer em conhecer você'?",
           options: ["Zàijiàn", "Rènshi nǐ hěn gāoxìng", "Dàjiā hǎo", "Duìbùqǐ"],
           answer: 1,
-          explain: "Rènshi nǐ hěn gāoxìng é a expressão de apresentação pessoal."
+          explain: "Rènshi nǐ hěn gāoxìng é a fórmula clássica de apresentação."
         },
         {
           q: "Como se forma o pronome possessivo 'meu / minha'?",
@@ -1930,10 +1895,10 @@
           explain: "Déwén é o idioma alemão (Déguó é o país Alemanha)."
         },
         {
-          q: "Qual verbo significa 'saber / ser capaz de' por treino?",
+          q: "Qual verbo significa 'saber / ser capaz de' por aprendizado?",
           options: ["huì", "zài", "qù", "yǒu"],
           answer: 0,
-          explain: "huì expressa uma habilidade aprendida (ex: huì shuō = saber falar)."
+          explain: "huì expressa habilidade adquirida (ex: huì shuō = saber falar)."
         }
       ],
       3: [
@@ -1964,7 +1929,7 @@
     function loadQuiz() {
       const qList = quizzes[selectedWeek];
       document.getElementById('quiz-title').textContent = `Quiz da Semana ${selectedWeek}`;
-      document.getElementById('quiz-subtitle').textContent = `Acerte pelo menos 75% para validar este módulo.`;
+      document.getElementById('quiz-subtitle').textContent = `Acerte pelo menos 75% para desbloquear a próxima etapa.`;
       
       if (!qList || qList.length === 0) return;
 
@@ -2025,6 +1990,7 @@
     function showQuizResults() {
       const qList = quizzes[selectedWeek];
       const percentage = Math.round((score / qList.length) * 100);
+      const passed = percentage >= 75;
       
       const db = getDatabase();
       if (currentStudent && db.students[currentStudent]) {
@@ -2032,13 +1998,13 @@
         db.students[currentStudent][wKey] = {
           progress: percentage,
           score: score,
+          passed: passed,
           updatedAt: new Date().toISOString()
         };
         saveDatabase(db);
         updateUI();
       }
 
-      const passed = percentage >= 75;
       const nextWeekNum = selectedWeek + 1;
       const container = document.getElementById('quiz-container');
 
@@ -2069,14 +2035,16 @@
     }
 
     /* ==========================================================
-       6. INICIALIZAÇÃO
+       6. INICIALIZAÇÃO COM RESTAURAÇÃO DE PROGRESSO
        ========================================================== */
     window.onload = () => {
       const db = getDatabase();
-      if (!db.currentStudent) {
+      if (!db.activeStudent || !db.students[db.activeStudent]) {
         openUserModal();
       } else {
-        currentStudent = db.currentStudent;
+        currentStudent = db.activeStudent;
+        const lastW = db.students[currentStudent].lastWeekViewed || 1;
+        setWeek(lastW);
         updateUI();
         loadQuiz();
       }
